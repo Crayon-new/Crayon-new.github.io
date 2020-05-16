@@ -1,0 +1,57 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{%static 'css/regist.css' %}">
+    <link rel="stylesheet" type="text/css" href="{%static 'css/index4.css' %}">
+    <link rel="icon" type="image/x-icon" href="{%static 'img/zhengnan.jpg' %}">
+    <title>用户注册</title>
+</head>
+
+<body class="back">
+    <div class="container2">
+    </div>
+    <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
+    </div>
+    <!-- 头部 -->
+    <div id="header">
+        <div class="container">
+            <div class="h_left left">
+                <a href="http://127.0.0.1:8000/">
+                    <div class="train_img left"></div>
+                    <div class="wordstl1">铁路12307</div>
+                    <div class="wordstl2">RAILWAY 12307</div>
+                </a>
+            </div>
+            <form action="" class="form1 left" method="GET">
+                <input type="text" placeholder="搜索车票/餐饮/常旅客/相关规章" style="width:300px; height:30px" name="headsearch" />
+                <input type="submit" name="search" class=" green button" value="搜索" />
+            </form>
+
+        </div>
+    </div>
+    <!-- 注册框  -->
+    <div id="r">
+        <form action="submit" method="POST">
+            {% csrf_token %} &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp用户名*: {{ form }} <input type="text" name="username" placeholder="username"
+                class="input_style" autocomplete="off"><br/><br/><br/> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp设置密码*:
+            <input type="password" name="password" class="input_style" placeholder="password" autocomplete="new-password"><br><br/><br/>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp邮箱*:
+            &nbsp&nbsp&nbsp
+            <input type="text" name="email" class="input_style" placeholder="email(qq.com)"><br><br><br/> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <input type="submit" value="发送验证码" class="big blue button"><br><br><br>
+        </form>
+        <form action="submit" method="POST">
+            {% csrf_token %}{{ form }} &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp验证码*:
+            <input type="text" name="pas" class="input_style" placeholder="Verification code
+            "><br/> <br/> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <input type="submit" value="提交" class="big blue button"> <br>
+        </form>
+
+    </div>
+
+</body>
+
+</html>

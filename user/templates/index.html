@@ -1,0 +1,468 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{%static 'css/index4.css' %}">
+    <link rel="stylesheet" type="text/css" href="{%static 'css/swiper.css' %}">
+    <link rel="stylesheet" type="text/css" href="{%static 'css/regist.css' %}">
+    <link rel="icon" type="image/x-icon" href="{%static 'img/xiaoxin.jpg' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>12307首页</title>
+</head>
+
+<body>
+    <!-- 页面的头部 -->
+    <div id="header">
+        <div class="container">
+            <div class="h_left left">
+                <a href="http://127.0.0.1:8000/">
+                    <div class="train_img left"></div>
+                    <div class="wordstl1">铁路12307</div>
+                    <div class="wordstl2">RAILWAY 12307</div>
+                </a>
+            </div>
+            <form action="" class="form1 left" method="GET">
+                <input type="text" placeholder="搜索车票/餐饮/常旅客/相关规章" style="width:300px; height:30px" name="headsearch" />
+                <input type="submit" name="search" class=" green button" value="搜索" />
+            </form>
+            <div class="h_right ">
+                <a class="left rblank" href="login">用户登录</a>
+                <a class="rblank" href="regist/">用户注册</a>
+                <a href="logout">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp用户注销</a>
+            </div>
+        </div>
+    </div>
+    <!-- 导航栏 -->
+    <div id="nav">
+        <ul>
+            <li class="wordstl3 left1"><a href="#">首页</a>
+            </li>
+            <li class="wordstl3 left"><a href="#">车票</a>
+                <ul>
+                    <li><a href="#">购买</a></li>
+                    <li><a href="#">变更</a></li>
+                    <li><a href="#">改签</a></li>
+                </ul>
+            </li>
+            <li class="wordstl3 left"><a href="#">团购服务</a>
+                <ul>
+                    <li><a href="#">务工人员</a></li>
+                    <li><a href="#">学生团体</a></li>
+
+                </ul>
+            </li>
+            <li class="wordstl3 left"><a href="#">会员服务</a>
+                <ul>
+                    <li><a href="#">会员管理</a></li>
+                    <li><a href="#">积分账户</a></li>
+                    <li><a href="#">积分兑换</a></li>
+                </ul>
+            </li>
+            <li class="wordstl3 left"><a href="#">站车服务</a>
+                <ul>
+                    <li><a href="#">遗失物品查找</a></li>
+                    <li><a href="#">便民托运</a></li>
+                    <li><a href="#">共享汽车</a></li>
+                </ul>
+            </li>
+            <li class="wordstl3 left"><a href="#">出行指南</a>
+                <ul>
+                    <li><a href="#">常见问题</a></li>
+                    <li><a href="#">旅客须知</a></li>
+                    <li><a href="#">相关章程</a></li>
+                </ul>
+            </li>
+            <li class="wordstl4"><a href="#" class="left">信息查询</a>
+            </li>
+
+        </ul>
+    </div>
+
+
+
+    <!-- 滑动图及快捷查询部分 -->
+    <div id="banner">
+        <div id="searchWindows">
+            <!-- 小窗口不同查询 -->
+            <div class="s_left left">
+                <div class="left_a1" onclick="showText1()" id="l_a1"><a href="#">&nbsp&nbsp&nbsp&nbsp车&nbsp&nbsp&nbsp&nbsp&nbsp票</a>
+                </div>
+                <div class="left_a2" onclick="showText2()" id="l_a2"><a href="#">&nbsp&nbsp&nbsp&nbsp常用查询</a></div>
+                <div class="left_a3" onclick="showText3()" id="l_a3"><a href="#">&nbsp&nbsp&nbsp&nbsp订&nbsp&nbsp&nbsp&nbsp&nbsp餐</a></div>
+            </div>
+            <!-- 小窗口右边表单部分 -->
+            <div class="s_right" id="s_right1">
+                <form action="search/" method="POST">
+                    {% csrf_token %} {{form}}
+                    <div class="Depart">
+                        出发地：
+                        <input list="station" type="text" class="input_style" name="From" />
+                        <datalist id="station">
+                          <option value="北京">
+                          <option value="广州南">
+                          <option value="深圳北">
+                            <option value="福田">
+                            </option>
+                        </datalist>
+                    </div>
+                    <div class="Arrive">
+                        到达地：
+                        <input list="station" type="text" class="input_style" name="To" />
+                        <datalist id="station">
+                          <option value="北京">T
+                          <option value="广州南">
+                          <option value="深圳北">
+                            <option value="福田">
+                            </option>
+                        </datalist>
+                    </div>
+                    <div class="Date">
+                        出发日期：
+                        <input list="date" type="date" class="input_style" name="Date" />
+                        <datalist id="date">
+                          <option value="2020-6-10">
+                          <option value="2020-6-11">
+                          <option value="2020-6-12">
+                            <option value="2020-6-13">
+                            </option>
+                        </datalist>
+                    </div>
+                    &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                    <input type=submit value="查询" class="blue button">
+                </form>
+            </div>
+            <div class="s_right" id="s_right2"></div>
+            <div class="s_right" id="s_right3"></div>
+
+        </div>
+        <!-- <div class="container"></div> -->
+        <div class="swiper-container">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="static/img/ban4.jpg" width="100%;" height="530"></div>
+                <div class="swiper-slide"><img src="static/img/ban2.jpg" width="100%;" height="530"></div>
+                <div class="swiper-slide"><img src="static/img/ban3.jpg" width="100%;" height="530"></div>
+                <div class="swiper-slide"><img src="static/img/ban1.jpg" width="100%;" height="530"></div>
+
+            </div>
+            <!-- Add Pagination -->
+            <div class="swiper-pagination"></div>
+            <div class="swiper-button-next">1</div>
+            <div class="swiper-button-prev"></div>
+        </div>
+        <div class="banner-nav-bg"></div>
+
+    </div>
+    </div>
+    <!-- 附加功能部分 -->
+    <div id="append">
+        <div class="container">
+            <div class="Ticket_recommendations">
+                <a href="#">
+                    <div class="left">
+                        <div class="Ticket_recom"></div>
+                        <div class="append_text">购票推荐</div>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="left">
+                        <div class="Baggage"></div>
+                        <div class="append_text">行李托运</div>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="left">
+                        <div class="hotel"></div>
+                        <div class="append_text">酒店预约</div>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="left">
+                        <div class="car_sharing"></div>
+                        <div class="append_text">共享汽车</div>
+                    </div>
+                </a>
+                <a href="#">
+                    <div class="left">
+                        <div class="lost"></div>
+                        <div class="append_text">遗失物品查找</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- 旅游-->
+    <div id="Notice_Board">
+        <h1>
+            铁路旅游
+        </h1>
+        <div class="right">
+            <div>
+                <div class="t1"></div>
+                <h2>畅览南疆</h2>
+            </div>
+            <br>
+            <div>
+                <div class="t2"></div>
+                <h2>河北山海旅游</h2>
+            </div>
+        </div>
+        <div>
+            <div class="t3"></div>
+            <h2>穿过沙漠的旅行</h2>
+        </div>
+        <br>
+        <div>
+            <div class="t4"></div>
+            <h2>在大草原相见</h2>
+
+        </div>
+    </div>
+    <!--  -->
+    <div id="anoucement">
+        <div class="abox">
+            <div class="anouce_top">
+                <div class="anouce_top_l left" onclick="showpros()" id="Pros">
+                    <h2>常见问题</h2>
+                </div>
+                <div class="anouce_top_r left" onclick="shownews()" id="News">
+                    <h2>最新发布</h2>
+                </div>
+
+            </div>
+            <div class="news" id="new">
+                <div class="anouce_bottom_l1 left">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <h3>公告</h3>
+                                <h4>2020-5-1</h4>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <h3>公告</h3>
+                                <h4>2020-5-1</h4>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <h3>公告</h3>
+                                <h4>2020-5-1</h4>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <h3>公告</h3>
+                                <h4>2020-5-1</h4>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <h3>公告</h3>
+                                <h4>2020-5-1</h4>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="anouce_bottom_R1 left">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <h3>公告</h3>
+                                <h4>2020-5-1</h4>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <h3>公告</h3>
+                                <h4>2020-5-1</h4>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <h3>公告</h3>
+                                <h4>2020-5-1</h4>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <h3>公告</h3>
+                                <h4>2020-5-1</h4>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <h3>公告</h3>
+                                <h4>2020-5-1</h4>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="problem" id="pros">
+                <div class="anouce_bottom_l2 left">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <h3>实名制车票</h3>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <h3>互联网售票</h3>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <h3>实名制车票</h3>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <h3>实名制车票</h3>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <h3>互联网售票</h3>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="anouce_bottom_R2 left">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <h3>互联网售票</h3>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <h3>互联网售票</h3>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <h3>实名制车票</h3>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <h3>实名制车票</h3>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <h3>实名制车票</h3>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <!-- 底部 -->
+    <div id='bottom'>
+        <div class="container">
+            <div class="bo_img"></div>
+        </div>
+    </div>
+
+</body>
+<script type="text/javascript" src="{%static 'js/swiper.js' %}"></script>
+<script>
+    var swiper = new Swiper('.swiper-container', {
+        pagination: '.swiper-pagination',
+        paginationClickable: true,
+        loop: true,
+        autoplay: 2000,
+
+
+        speed: 800,
+        prevButton: '.swiper-button-prev',
+        nextButton: '.swiper-button-next',
+        effect: 'coverflow', //  effect: 'flip',effect: 'coverflow',slide', 'fade',cube
+        grabCursor: true,
+        cube: {
+            shadow: false,
+            slideShadows: false,
+            shadowOffset: 20,
+            shadowScale: 0.94
+        }
+    });
+
+    function showText1() {
+        var test1 = document.getElementById("s_right1");
+        test1.style.display = "block";
+        var t1 = document.getElementById("l_a1");
+        t1.style.background = "rgba(245, 223, 223, 0.87)";
+        var test2 = document.getElementById("s_right2");
+        test2.style.display = "none";
+        var t2 = document.getElementById("l_a2");
+        t2.style.background = "rgb(67, 126, 253)";
+        var test3 = document.getElementById("s_right3");
+        test3.style.display = "none";
+        var t3 = document.getElementById("l_a3");
+        t3.style.background = "rgb(67, 126, 253)";
+    }
+
+    function showText2() {
+        var test1 = document.getElementById("s_right1");
+        test1.style.display = "none";
+        var t1 = document.getElementById("l_a1");
+        t1.style.background = "rgb(67, 126, 253)";
+        var test2 = document.getElementById("s_right2");
+        test2.style.display = "block";
+        var t2 = document.getElementById("l_a2");
+        t2.style.background = "rgba(245, 223, 223, 0.87)";
+        var test3 = document.getElementById("s_right3");
+        test3.style.display = "none";
+        var t3 = document.getElementById("l_a3");
+        t3.style.background = "rgb(67, 126, 253)";
+    }
+
+    function showText3() {
+        var test1 = document.getElementById("s_right1");
+        test1.style.display = "none";
+        var t1 = document.getElementById("l_a1");
+        t1.style.background = "rgb(67, 126, 253)";
+        var test2 = document.getElementById("s_right2");
+        test2.style.display = "none";
+        var t2 = document.getElementById("l_a2");
+        t2.style.background = "rgb(67, 126, 253)";
+        var test3 = document.getElementById("s_right3");
+        var t3 = document.getElementById("l_a3");
+        t3.style.background = "rgba(245, 223, 223, 0.87)";
+        test3.style.display = "block";
+    }
+
+    function shownews() {
+        var test1 = document.getElementById("Pros");
+        test1.style.background = "white";
+        var test2 = document.getElementById("News");
+        test2.style.background = "rgba(172, 152, 189, 0.548)";
+        var test3 = document.getElementById("new");
+        test3.style.display = "block";
+        var test4 = document.getElementById("pros");
+        test4.style.display = "none";
+    }
+
+    function showpros() {
+        var test1 = document.getElementById("Pros");
+        test1.style.background = "rgba(172, 152, 189, 0.548)";
+        var test2 = document.getElementById("News");
+        test2.style.background = "white";
+        var test3 = document.getElementById("new");
+        test3.style.display = "none";
+        var test4 = document.getElementById("pros");
+        test4.style.display = "block";
+    }
+</script>
+
+</html>

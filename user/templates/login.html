@@ -1,0 +1,49 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{%static 'css/regist.css' %}">
+    <link rel="stylesheet" type="text/css" href="{%static 'css/index4.css' %}">
+    <link rel="icon" type="image/x-icon" href="{%static 'img/adai.jpg' %}">
+    <title>用户登录</title>
+</head>
+
+<body class="back">
+    <div class="container2">
+    </div>
+    <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';">
+    </div>
+    <!-- 头部 -->
+    <div id="header">
+        <div class="container">
+            <div class="h_left left">
+                <a href="http://127.0.0.1:8000/">
+                    <div class="train_img left"></div>
+                    <div class="wordstl1">铁路12307</div>
+                    <div class="wordstl2">RAILWAY 12307</div>
+                </a>
+            </div>
+            <form action="" class="form1 left" method="GET">
+                <input type="text" placeholder="搜索车票/餐饮/常旅客/相关规章" style="width:300px; height:30px" name="headsearch" />
+                <input type="submit" name="search" class=" green button" value="搜索" />
+            </form>
+
+        </div>
+    </div>
+    <!-- 登录框  -->
+    <div id="r">
+        <form action="submit2" method="POST">
+            {% csrf_token %} {{form}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp用户名*: {{ form }} <input type="text" onfocus="this.type='password'"
+                name="loguser" placeholder="username" class="input_style" autocomplete="off"><br/><br/><br/><br/><br/> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp密码*:
+            <input type="password" name="logpass" class="input_style" placeholder="password" autocomplete="new-password"><br><br/><br/>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <br/><br/><br/> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <input type="submit" value="登录" class="large blue button"><br><br><br> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp &nbsp&nbsp&nbsp&nbsp&nbsp<a href="#" class="large green button">忘记密码</a>
+        </form>
+    </div>
+
+</body>
+
+</html>
