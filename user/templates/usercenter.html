@@ -6,28 +6,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{%static 'css/index4.css' %}">
-    <link rel="stylesheet" type="text/css" href="{%static 'css/search4.css' %}">
-    <title>查询车票</title>
-    <style>
-        a {
-            color: rgb(61, 92, 25);
-            transition: 0.3s;
-        }
-        
-        a:hover {
-            color: rgb(165, 110, 187);
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{%static 'css/usercenter1.css' %}">
+    <link rel="stylesheet" type="text/css" href="{%static 'css/regist.css' %}">
+    <title>个人中心</title>
 </head>
 
-<body>
+<body class="back">
     <div id="header">
         <div class="container">
             <div class="h_left left">
                 <a href="http://127.0.0.1:8000/">
                     <div class="train_img left"></div>
                     <div class="wordstl1">铁路12307</div>
-                    <div class="wordstl2">RAILWAY 12307</div>
+                    <div class="words tl2">RAILWAY 12307</div>
                 </a>
             </div>
             <form action="" class="form1 left" method="GET">
@@ -40,35 +31,36 @@
     </div>
     <table>
         <tr>
-            <th>出发日期</th>
+            <th>下单时间</th>
+            <th>订单完成状态</th>
             <th>车次</th>
+            <th>出发日期</th>
             <th>是否当日到达</th>
-            <th>出发时间</th>
+            <th>座位类型</th>
+            <th>发出时间</th>
             <th>到达时间</th>
             <th>发出站</th>
             <th>到达站</th>
-            <th>座位类型</th>
-            <th>车票数目</th>
             <th>票价</th>
             <th>操作</th>
         </tr>
         {% for T in tlist %}
         <tr>
-            <td>{{T.ticket_date}}</td>
+            <td>{{T.transaction_time}}</td>
+            <td>{% if T.transaction_state is True%}待完成{% else %}已完成{%endif%}</td>
             <td>{{T.train_name}}</td>
+            <td>{{T.ticket_date}}</td>
             <td>{% if T.day_difference == 0 %}是{% else %}否{% endif %}</td>
+            <td>{{T.seat_type}}</td>
             <td>{{T.depart_time}}</td>
             <td>{{T.arrive_time}}</td>
             <td>{{T.from_station_name}}</td>
             <td>{{T.to_station_name}}</td>
-            <td>{{T.seat_type}}</td>
-            <td>{% if T.num_of_tickets == -2 %}有{% elif T.num_of_tickets == 0 %}无{%else%}{{T.num_of_tickets}}{% endif %}</td>
-            <td> {% if T.price == -1.0 %}--{% else %}{{T.price}}{% endif %}</td>
-            <td><a class="h_right" href="buyticket/?tid={{T.ticket_id}}">购买</a></td>
+            <td>{{T.price}}元</td>
+            <td><a class="h_right" href="refundticket/?tid={{T.order_id}}">退票</a> <a class="h_right" href="refundticket/?tid={{T.ticket_id}}">改签</a></td>
         </tr>
         {% endfor %}
     </table>
-
 
 </body>
 

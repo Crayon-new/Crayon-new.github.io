@@ -8,25 +8,25 @@ from sqlalchemy import Column, Integer, String, DateTime, create_engine, Date, F
     PrimaryKeyConstraint, SmallInteger, Boolean, Sequence, UniqueConstraint, Time
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime, date, timedelta, time
-from operator import and_
 # base class
 ModelBase = declarative_base()
-Base = automap_base()
+# Base = automap_base()
 
 engine_url = 'postgresql://checker:123456@127.0.0.1:5432/test'
 engine = create_engine(engine_url, echo=True)
-Base.prepare(engine, reflect=True)
-tables = Base.classes
+# Base.prepare(engine, reflect=True)
+# tables = Base.classes
 # Train = tables.train
 # Station = tables.station
 # Ticket = tables.ticket
 
 DBSession = sessionmaker(bind=engine)
 ## initialized
-
+session = DBSession()
 
 class Train(ModelBase):
     __tablename__ = 'Train'
+
     train_id = Column(Integer, primary_key=True)
     train_num = Column(String(20), nullable=False, unique=True)
     train_name = Column(String(10), nullable=False)
@@ -55,12 +55,7 @@ class Ticket(ModelBase):
         UniqueConstraint('ticket_date', 'from_station_id', 'to_station_id', 'train_id', 'seat_type', 'depart_time'),
         {}
     )
-    def query(From,To,date):
-     station1 = session.query(Station).filter(Station.station_name==From).one()
-     station2 = session.query(Station).filter(Station.station_name==To).one()
-     Ti = session.query(Ticket).filter(Ticket.from_station_id==station1.station_id,Ticket.to_station_id==station2.station_id,Ticket.ticket_date==date,).all()
-     return Ti
- 
+
 
 class Station(ModelBase):
     __tablename__ = 'Station'
@@ -70,7 +65,34 @@ class Station(ModelBase):
     station_name = Column(String(20), nullable=False)
     city_name = Column(String(20), nullable=False)
 
-session = DBSession()
+# session = DBSession()
+
+
+class User(ModelBase):
+    __tablename__ = 'User'
+
+    user_id = Column(Integer, primary_key=True)
+    user_name = Column(String(20), nullable=False, unique=True)
+    user_pwd = Column(String(70), nullable=False)
+    user_pwd_salt = Column(String(12), nullable=False)
+    user_identity_num = Column(String(20), nullable=True)
+    user_email = Column(String(20), nullable=False)
+    user_type = Column(String(20), nullable=False)
+
+
+class Order(ModelBase):
+    __tablename__ = 'Order'
+
+    order_id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey(User.user_id), nullable=False)
+    ticket_id =  Column(Integer, ForeignKey(Ticket.ticket_id), nullable=False)
+    transaction_time = Column(DateTime, nullable=False)
+    transaction_state = Column(Boolean, nullable=False, default=False)
+
+    __table_args__ = (
+        UniqueConstraint('user_id', 'transaction_time'),
+        {}
+    )
 
 def insertIntoTrain(train_num, train_name, seat_type):
     """
@@ -78,10 +100,12 @@ def insertIntoTrain(train_num, train_name, seat_type):
     :param row: a row represented by list
     :return:
     """
+    # session = DBSession()
     new_row = Train()
     new_row.train_name = train_name
     new_row.train_num = train_num
     new_row.seat_type = seat_type
+    # session.begin()
     q0 = session.query(Train).filter_by(train_name=train_name)
     if len(q0.all()) != 0:
         return False
@@ -91,9 +115,9 @@ def insertIntoTrain(train_num, train_name, seat_type):
         # session.close()
     except Exception:
         session.rollback()
-        session.close()
+        # session.close()
         return False
-    session.close()
+    # session.close()
     return True
 
 def insertIntoTicket(row_dict):
@@ -101,9 +125,12 @@ def insertIntoTicket(row_dict):
     :param row_list:
     :return:
     """
+    # session = DBSession()
+
     new_row = Ticket()
     # new_row.ticket_date = time.strptime(date, '%Y%m%d')
     new_row.ticket_date = row_dict['td']
+    # session.begin()
     try:
         new_row.train_id = session.query(Train).filter_by(train_num=row_dict['tn']).first().train_id
         new_row.start_station_id = session.query(Station).filter_by(station_code=row_dict['ssc']).first().station_id
@@ -127,11 +154,12 @@ def insertIntoTicket(row_dict):
     #     session.rollback()
     #     session.close()
     #     return False
-    session.close()
+    # session.close()
     return True
 
 
 def insertIntoStation(station_code, station_name):
+    # session = DBSession()
     new_row = Station()
     new_row.station_name = station_name
     new_row.station_code = station_code
@@ -139,6 +167,7 @@ def insertIntoStation(station_code, station_name):
         new_row.city_name = station_name[:(len(station_name)-1)]
     else:
         new_row.city_name = station_name
+    # session.begin()
     q0 = session.query(Station).filter_by(station_code=station_code)
     if len(q0.all()) != 0:
         return False
@@ -148,9 +177,9 @@ def insertIntoStation(station_code, station_name):
         # session.close()
     except Exception:
         session.rollback()
-        session.close()
+        # session.close()
         return False
-    session.close()
+    # session.close()
     return True
 
 def ticketLineToDict(line):
@@ -174,3 +203,25 @@ def ticketLineToDict(line):
     return elem
 
 
+if __name__ == '__main__':
+    ModelBase.metadata.drop_all(engine)
+    ModelBase.metadata.create_all(engine)
+    file = open('./data/mini-set.csv')
+    for line in file:
+        row = line.split(',')
+        if not insertIntoTrain(row[0], row[1], row[26]):
+            print("Insertion failed for train_num: %s, seat_type: %s"%(row[0], row[26]))
+        if not insertIntoStation(row[2], row[3]):
+            print("Insertion failed for station: %s"%row[3])
+        if not insertIntoStation(row[4], row[5]):
+            print("Insertion failed for station: %s"%row[5])
+        if not insertIntoStation(row[6], row[7]):
+            print("Insertion failed for station: %s"%row[7])
+        if not insertIntoStation(row[8], row[9]):
+            print("Insertion failed for station: %s"%row[9])
+    file.close()
+    file = open('./data/mini-ticketset.csv')
+    for line in file:
+        elem = ticketLineToDict(line)
+        if not insertIntoTicket(elem):
+            print("Insertion failed for Ticket: %s, seat_type: %s", elem['tn'], elem['stype'])

@@ -2,13 +2,16 @@ from django.http import HttpResponse
 import random
 from django.shortcuts import render
 from django import forms
+from datetime import date
 from django.core.mail import send_mail
 from django.template import loader,Context
 from user.models import Users
-from user.model import Ticket
+from user.model import User, Train, Ticket, Station, Order, ModelBase
 # Create your views here.
 from .form import UserForm,passform,loginiform,searchT
-
+from user.searchTicket import Manager,pPassenger
+m = Manager('postgresql://checker:123456@127.0.0.1:5432/test')
+ModelBase.metadata.create_all(m.engine)
 count1 = 0
 i = 0
 username ="" #正在注册个体
@@ -21,6 +24,7 @@ def hello(request):
      return render(request,'index.html')
 def login(request):
     return render(request,'login.html')
+
 def submit2(request):
  global loginUser
  if request.method=='POST':
@@ -31,8 +35,8 @@ def submit2(request):
      try:
       if not request.COOKIES.get('username','')=="":
            return HttpResponse("不可重复登录")
-      user = Users.objects.get(username=username2)
-      if user.password==password2:
+      res = m.validate(username2, password2)
+      if  res!=False:
           loginUser = username2
           response = HttpResponse("欢迎!"+" "+loginUser)
                 #将username2写入浏览器cookie,失效时间为3600
@@ -40,9 +44,9 @@ def submit2(request):
           return response
           return HttpResponse("欢迎!"+" "+request.COOKIES.get('username',''))
       else:
-          return HttpResponse("密码错误，请返回重新输入密码！")
+          return HttpResponse("密码错误或用户名不存在，请返回重新输入用户名密码！")
      except:
-          return HttpResponse("用户名不存在")
+          return HttpResponse("错误")
 def logout(request):
    if not request.COOKIES.get('username','')=="":
     response = HttpResponse('logout !!'+request.COOKIES.get('username',''))
@@ -73,11 +77,13 @@ def submit(request):
              passi = userform2.cleaned_data['pas']
              if passi==str(i) :
                  try:
-                   Users.objects.create(username=username,password=password,email=email)
+                   if  m.createUser(pPassenger.create(username, password, email)):
+                        count1=0
+                        return HttpResponse("注册成功")
+                   else:
+                        return HttpResponse("邮箱或用户已被注册")
                  except:
                     return HttpResponse("邮箱或用户已被注册")
-                 count1 = 0
-                 return HttpResponse("注册成功")
              else:
                  count1 = 0
                  return HttpResponse("验证码错误 请返回并重新发送验证码")
@@ -94,8 +100,48 @@ def ticketQ(request):
        fromwhere = Sform.cleaned_data['From']
        towhere = Sform.cleaned_data['To']
        date = Sform.cleaned_data['Date']
-    
-       tlist=Ticket.query(fromwhere,towhere,date)
+    #    if date.today()>date:
+    #        return HttpResponse('您选择的日期不在预售期范围内')
+       tlist = m.search(date,fromwhere,towhere)
        return render(request,'search.html',{'tlist':tlist})
       else:
           return HttpResponse(loginUser)
+
+def buy(request):
+    if request.COOKIES.get('username','')=="":
+        return HttpResponse('请先登录')
+    else:
+     if request.method=='GET':
+          list1 = request.GET.get('tid')
+          print(list1)
+          res = m.reserve(list1,request.COOKIES.get('username',''))
+          if res==1:
+            return HttpResponse("订票成功")
+          elif res==0:
+              return HttpResponse("余票不足，购票失败")
+          elif res ==-1:
+              return HttpResponse("请先登录")
+          else:
+              return HttpResponse("您已购买改区间段的其他车票，请勿重复购买")
+                
+     else:
+         return HttpResponse('请求错误！')
+
+
+def usercenter(request):
+     if request.COOKIES.get('username','')=="":
+        return HttpResponse('请先登录')
+     else:
+      tlist = m.checkOrders(request.COOKIES.get('username',''))
+      return render(request,'usercenter.html',{'tlist':tlist})
+
+def refundticket(request):
+    if request.method=='GET':
+          list1 = request.GET.get('tid')
+          res = m.refund(request.COOKIES.get('username',''),list1)
+          if res:
+               return HttpResponse("退票成功")
+          else:
+              return HttpResponse('该订单已被处理')
+    else:
+         return HttpResponse('请求错误！')

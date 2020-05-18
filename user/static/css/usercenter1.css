@@ -20,9 +20,18 @@ table,
 th,
 td {
     height: 40px;
-    width: 1500px;
+    width: 1100px;
     text-align: center;
-    background-color: bisque;
     border-collapse: collapse;
     border: 1px solid rgb(12, 0, 0);
+    margin-left: 350px;
+    margin-top: 20px;
+}
+
+tr:nth-child(odd) {
+    background-color: rgb(172, 154, 250);
+}
+
+tr:nth-child(even) {
+    background-color: rgb(144, 207, 247);
 }
