@@ -172,38 +172,65 @@ class Manager:
             return False
         return res[0].user_id
 
-    def checkOrders(self, user_name):
+    def checkOrders(self, user_name, exhibit_finished=True):
         session = self.DBsession()
-        res = self._checkOrders(user_name, session)
+        res = self._checkOrders(user_name, session, exhibit_finished)
+        rl = []
+        for row in res:
+            rd = row._asdict()
+            rd['price'] = rd['price'] / 10
+            rl.append(rd)
         session.close()
-        return res
+        return rl
 
-    def _checkOrders(self, user_name, session):
+    def _checkOrders(self, user_name, session, exhibit_finished=True):
         """
         :param user_name: name of the user
         :return: all the orders created by current user
         """
         # session = self.DBsession()
         user_id = self.userName2Id(user_name, session)
-        q0 = (
-            session.query(Order.transaction_time.label('transaction_time'),
-                          Order.transaction_state.label('transaction_state'),
-                          Train.train_name.label('train_name'),
-                          Station.station_name.label('from_station_name'),
-                          Ticket.to_station_id.label('to_station_id'),
-                          Order.order_id.label('order_id'),
-                          Ticket.price.label('price'),
-                          Ticket.seat_type.label('seat_type'),
-                          Ticket.ticket_date.label('ticket_date'),
-                          Ticket.depart_time.label('depart_time'),
-                          Ticket.day_difference.label('day_difference'),
-                          Ticket.arrive_time.label('arrive_time'))
-            .filter(Order.user_id==user_id)
-            .join(Ticket, Ticket.ticket_id==Order.ticket_id)
-            .join(Train, Train.train_id==Ticket.train_id)
-            .join(Station, Station.station_id==Ticket.from_station_id)
-            .subquery('q0')
-        )
+        if exhibit_finished:
+            q0 = (
+                session.query(Order.transaction_time.label('transaction_time'),
+                              Order.transaction_state.label('transaction_state'),
+                              Train.train_name.label('train_name'),
+                              Station.station_name.label('from_station_name'),
+                              Ticket.to_station_id.label('to_station_id'),
+                              Order.order_id.label('order_id'),
+                              Ticket.price.label('price'),
+                              Ticket.seat_type.label('seat_type'),
+                              Ticket.ticket_date.label('ticket_date'),
+                              Ticket.depart_time.label('depart_time'),
+                              Ticket.day_difference.label('day_difference'),
+                              Ticket.arrive_time.label('arrive_time'))
+                .filter(Order.user_id==user_id)
+                .join(Ticket, Ticket.ticket_id==Order.ticket_id)
+                .join(Train, Train.train_id==Ticket.train_id)
+                .join(Station, Station.station_id==Ticket.from_station_id)
+                .subquery('q0')
+            )
+        else:
+            q0 = (
+                session.query(Order.transaction_time.label('transaction_time'),
+                              Order.transaction_state.label('transaction_state'),
+                              Train.train_name.label('train_name'),
+                              Station.station_name.label('from_station_name'),
+                              Ticket.to_station_id.label('to_station_id'),
+                              Order.order_id.label('order_id'),
+                              Ticket.price.label('price'),
+                              Ticket.seat_type.label('seat_type'),
+                              Ticket.ticket_date.label('ticket_date'),
+                              Ticket.depart_time.label('depart_time'),
+                              Ticket.day_difference.label('day_difference'),
+                              Ticket.arrive_time.label('arrive_time'))
+                .filter(Order.user_id==user_id)
+                .filter(Order.transaction_state==True)
+                .join(Ticket, Ticket.ticket_id==Order.ticket_id)
+                .join(Train, Train.train_id==Ticket.train_id)
+                .join(Station, Station.station_id==Ticket.from_station_id)
+                .subquery('q0')
+            )
         q1 =(
             session.query(
                 q0.c.transaction_time.label('transaction_time'),
@@ -223,12 +250,7 @@ class Manager:
         )
         # session.close()
         res = q1.all()
-        rl = []
-        for row in res:
-            rd = row._asdict()
-            rd['price'] = rd['price'] / 10
-            rl.append(rd)
-        return rl
+        return res
 
 
     def validate(self, user_name, user_pwd):
@@ -287,13 +309,27 @@ class Manager:
 
     def removeStationFrom(self, station_id, train_id):
         session = self.DBsession()
-        (
+        q0 = (
             session.query(Ticket)
             .filter((Ticket.train_id==train_id)
                     & ((Ticket.from_station_id==station_id)
                     | (Ticket.to_station_id==station_id)))
-            .update({Ticket.available_flag: False})
         )
+        res = q0.all()
+        for row in res:
+            (
+                session.query(Order)
+                .filter(row.ticket_id==Order.ticket_id)
+                .update({Order.transaction_state: False})
+             )
+        q0.update({Ticket.available_flag:False})
+        try:
+            session.commit()
+        except Exception:
+            session.rollback()
+            return False
+        return True
+
 
     def createStation(self, station_code, station_name, city_name, train_id):
         session = self.DBsession()
@@ -309,6 +345,35 @@ class Manager:
             return self.K_FAILED
         return self.K_SUCCESS
 
+    # creates a new ticket in Ticket table
+    def addTicketToTrain(self, train_date, start_s, end_s, from_s, to_s,
+                         depart_t, arrive_t, day_diff, train_id,
+                         num_of_tickets, seat_type, price):
+        session = self.DBsession()
+        new_row = Ticket()
+        try:
+            new_row.train_id = session.query(Train).filter_by(train_id=train_id).first().train_id
+            new_row.start_station_id = session.query(Station).filter_by(station_name=start_s).first().station_id
+            new_row.end_station_id = session.query(Station).filter_by(station_name=end_s).first().station_id
+            new_row.from_station_id = session.query(Station).filter_by(station_name=from_s).first().station_id
+            new_row.to_station_id = session.query(Station).filter_by(station_name=to_s).first().station_id
+        except Exception:
+            return self.K_FAILED
+        new_row.ticket_date = train_date
+        new_row.price = price*10
+        new_row.num_of_tickets = num_of_tickets
+        new_row.seat_type = seat_type
+        new_row.available_flag = True
+        new_row.depart_time = depart_t
+        new_row.arrive_time = arrive_t
+        new_row.day_difference = day_diff
+        try:
+            session.add(new_row)
+            session.commit()
+        except Exception:
+            session.rollback()
+            return self.K_FAILED
+        return self.K_SUCCESS
 
 class pUser:
     @staticmethod

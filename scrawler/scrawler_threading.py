@@ -3,6 +3,7 @@ import json
 import time
 from threading import Thread, Lock
 from queue import Queue
+from datetime import datetime
 
 headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.26 Safari/537.36 Core/1.63.5702.400 QQBrowser/10.2.1893.400"
@@ -99,11 +100,12 @@ def getTrainInfo(date, de_station, ar_station, station_code):
 # seat_types 26
 def getTicketPrice(train_num, de_station_no, ar_station_no, seat_types, date):
     url = 'https://www.12306.cn/kfzmpt/leftTicket/queryTicketPrice?'
+    dt = datetime.strptime(date, '%Y%m%d').strftime('%Y-%m-%d')
     url = url + 'train_no=' + train_num \
             + '&from_station_no=' + de_station_no \
             + '&to_station_no=' + ar_station_no \
             + '&seat_types=' + seat_types \
-            + '&train_date=' + date
+            + '&train_date=' + dt
     r = requests.get(url, headers=headers)
     r.raise_for_status()
     r.encoding = r.apparent_encoding
@@ -175,6 +177,69 @@ class Generator:
             else:
                 raise StopIteration
         return result
+
+
+class Generator2:
+    def __init__(self, length):
+        self.length = length
+
+    def __iter__(self):
+        self.ii = 0
+        return self
+
+    def __next__(self):
+        result = self.ii
+        self.ii = self.ii + 1
+        if self.ii <= self.length:
+            return result
+        raise StopIteration
+
+
+def producerTicket(generator, out_q):
+    while True:
+        lock.acquire()
+        try:
+            args = next(generator)
+        except StopIteration:
+            lock.release()
+            break
+        lock.release()
+        line = ticket_lines[args].split(',')
+        try:
+            out_q.put((args, getTicketPrice(line[0], line[28], line[29], line[26], line[22])))
+        except Exception:
+            continue
+
+def consumerTicket(out_q, ticket):
+    while True:
+        response = out_q.get()
+        print('Processing line %d out of %d'%(response[0], len(ticket_lines)))
+        result = extractTicketPrice(response[1])
+
+        row = ticket_lines[response[0]].split(',')
+        prefix = row[0] + ',' + row[2] + ',' + row[3] + ',' + row[4] + ',' + row[5] + ',' + row[6] + ',' + row[
+            7] + ',' + row[8] + ',' + row[9] + ',' + row[10] + ',' + row[11] + ',' + row[12] + ',' + row[22] + ','
+        for ii in result.keys():
+            ticket.write(prefix)
+            ticket.write(seat_price_ref[ii] + ',')
+            ticket.write(str(result[ii]) + ',')
+            num = ''
+            if row[seat_file_index[ii] + 36] == '--':
+                num = '-1'
+            elif row[seat_file_index[ii] + 36] == '无':
+                num = '0'
+            elif row[seat_file_index[ii] + 36] == '有':
+                num = '100'
+            else:
+                num = row[seat_file_index[ii] + 36]
+            ticket.write(num + ',')
+            train_available = ''
+            if row[34] == '1':
+                train_available = '0'
+            else:
+                train_available = '1'
+            ticket.write(train_available)
+            ticket.write('\n')
 
 def extractTicketPrice(pr):
     """
@@ -273,57 +338,69 @@ target = [
 total_num = 0
 lock = Lock()
 name = 'ticket'
-if name == 'train':
-    # url_q = Queue()
-    result_q = Queue()
-    station_code = getStationList()
-    gnr = iter(Generator(len(station_code)))
+if __name__ == '__main__':
+    url_q = Queue()
     dataset = open('./data/trainInfo.csv', 'w')
-    date = '2020-04-28'
-    total_num = len(station_code)*(len(station_code) - 1)
+    dates = ['2020-05-21', '2020-05-22', '2020-05-23', '2020-05-24']
+    station_code = getStationList()
+    for date in dates:
+        result_q = Queue()
+        gnr = iter(Generator(100))
+        total_num = len(station_code)*(len(station_code) - 1)
+        threads = []
+        for i in range(20):
+            thread = Thread(target=producer, args=(gnr, result_q, ), daemon=True)
+            threads.append(thread)
+            thread.start()
+
+        thread_p = Thread(target=consumer, args=(result_q, dataset, ), daemon=True)
+        thread_p.start()
+        # thread.join()
+        for t in threads:
+            t.join()
+
+        while result_q.empty() is not True:
+            response = json.loads(result_q.get())
+            writeTrainInfo(dataset, response)
+    dataset.close()
+        # if name == 'ticket':
+        # control flag [34]
+    ticket = open('./data/ticketset.csv', 'w')
+    file = open('./data/trainInfo.csv')
+    ticket_lines = file.readlines()
+    ticket_q = Queue()
+    gnr2 = iter(Generator2(len(ticket_lines)))
     threads = []
     for i in range(20):
-        thread = Thread(target=producer, args=(gnr, result_q, ), daemon=True)
+        thread = Thread(target=producerTicket, args=(gnr2, ticket_q, ), daemon=True)
         threads.append(thread)
         thread.start()
 
-    thread_p = Thread(target=consumer, args=(result_q, dataset, ), daemon=True)
-    thread_p.start()
-    # thread.join()
+    thread_c = Thread(target=consumerTicket, args=(ticket_q, ticket, ), daemon=True)
+    thread_c.start()
+
     for t in threads:
         t.join()
 
-    while result_q.empty() is not True:
-        response = json.loads(result_q.get())
-        writeTrainInfo(dataset, response)
-
-if name == 'ticket':
-# control flag [34]
-    file = open('./data/mini-set.csv')
-    ticket = open('./data/mini-ticketset.csv', 'w')
-    for line in file:
-        row = line.split(',')
-        response = getTicketPrice(row[0], row[28], row[29], row[26], '2020-05-12')
-        print(response)
-        result = extractTicketPrice(response)
-        if result == False:
-            continue
-        # train_num, ssc, ssn,
+    while ticket_q.empty() is not True:
+        response = ticket_q.get()
+        result = extractTicketPrice(response[1])
+        row = ticket_lines[response[0]].split(',')
         prefix = row[0] + ',' + row[2] + ',' + row[3] + ',' + row[4] + ',' + row[5] + ',' + row[6] + ',' + row[
-            7] + ',' + row[8] + ',' + row[9] + ',' + row[10] + ',' + row[11] + ','  + row[12] + ',' + row[22] + ','
+            7] + ',' + row[8] + ',' + row[9] + ',' + row[10] + ',' + row[11] + ',' + row[12] + ',' + row[22] + ','
         for ii in result.keys():
             ticket.write(prefix)
             ticket.write(seat_price_ref[ii] + ',')
             ticket.write(str(result[ii]) + ',')
             num = ''
-            if row[seat_file_index[ii]+36] == '--':
+            if row[seat_file_index[ii] + 36] == '--':
                 num = '-1'
-            elif row[seat_file_index[ii]+36] == '无':
+            elif row[seat_file_index[ii] + 36] == '无':
                 num = '0'
-            elif row[seat_file_index[ii]+36] == '有':
-                num = '-2'
+            elif row[seat_file_index[ii] + 36] == '有':
+                num = '100'
             else:
-                num = row[seat_file_index[ii]+36]
+                num = row[seat_file_index[ii] + 36]
             ticket.write(num + ',')
             train_available = ''
             if row[34] == '1':
@@ -332,4 +409,5 @@ if name == 'ticket':
                 train_available = '1'
             ticket.write(train_available)
             ticket.write('\n')
+
     ticket.close()
