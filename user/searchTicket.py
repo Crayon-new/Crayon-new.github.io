@@ -265,6 +265,17 @@ class Manager:
         session.close()
         return res[0]
 
+    def checkUserType(self, user_name):
+        session = self.DBsession()
+        q=session.query(User).filter(User.user_name==user_name)
+        session.close()
+        res = q.all()
+        if len(res)!=1:
+            session.close()
+            return False
+        session.close()
+        return res[0]
+
     def createUser(self, user):
         """
         :param user: User(ModelBase) object
@@ -398,17 +409,8 @@ class pUser:
         res = int(r.random()*(10**(length)))
         return str(res)
 
- #x 
-    def checkUserType(self,user_name):
-        session = self.DBsession()
-        q=session.query(User).filter(User.user_name==user_name)
-        session.close()
-        res = q.all()
-        if len(res)!=1:
-            session.close()
-            return False
-        session.close()
-        return res[0]
+
+
 class pSuperUser(pUser):
     @staticmethod
     def create(user_name, user_password, user_email):
