@@ -347,9 +347,33 @@ class Manager:
 
     # creates a new ticket in Ticket table
     def addTicketToTrain(self, train_date, start_s, end_s, from_s, to_s,
-                         depart_t, arrive_t, day_diff, train_id, num_of_tickets, price):
+                         depart_t, arrive_t, day_diff, train_id,
+                         num_of_tickets, seat_type, price):
         session = self.DBsession()
-
+        new_row = Ticket()
+        try:
+            new_row.train_id = session.query(Train).filter_by(train_id=train_id).first().train_id
+            new_row.start_station_id = session.query(Station).filter_by(station_name=start_s).first().station_id
+            new_row.end_station_id = session.query(Station).filter_by(station_name=end_s).first().station_id
+            new_row.from_station_id = session.query(Station).filter_by(station_name=from_s).first().station_id
+            new_row.to_station_id = session.query(Station).filter_by(station_name=to_s).first().station_id
+        except Exception:
+            return self.K_FAILED
+        new_row.ticket_date = train_date
+        new_row.price = price*10
+        new_row.num_of_tickets = num_of_tickets
+        new_row.seat_type = seat_type
+        new_row.available_flag = True
+        new_row.depart_time = depart_t
+        new_row.arrive_time = arrive_t
+        new_row.day_difference = day_diff
+        try:
+            session.add(new_row)
+            session.commit()
+        except Exception:
+            session.rollback()
+            return self.K_FAILED
+        return self.K_SUCCESS
 
 class pUser:
     @staticmethod
