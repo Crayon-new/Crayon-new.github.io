@@ -147,14 +147,14 @@ def insertIntoTicket(row_dict):
     new_row.depart_time = row_dict['stime']
     new_row.arrive_time = row_dict['etime']
     new_row.day_difference = row_dict['df']
-    try:
-        session.add(new_row)
-        session.commit()
-    except Exception:
-        session.rollback()
-        session.close()
-        return False
-    session.close()
+    # try:
+    session.add(new_row)
+    session.commit()
+    # except Exception:
+    #     session.rollback()
+    #     session.close()
+    #     return False
+    # session.close()
     return True
 
 
