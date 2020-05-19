@@ -38,6 +38,10 @@
 
         </div>
     </div>
+    <div>
+
+    </div>
+
     <table>
         <tr>
             <th>出发日期</th>
@@ -68,7 +72,18 @@
         </tr>
         {% endfor %}
     </table>
-
+    <div>
+        <span>
+            {% if tlist.has_previous %}
+                <a href="?page={{ tlist.previous_page_number }}&date={{date}}&fromwhere={{fromwhere}}&towhere={{towhere}}">previous</a>
+            {% endif %}
+     
+            <span class="current">
+                Page {{ tlist.number }} of {{ tlist.paginator.num_pages }}.
+            </span> {% if tlist.has_next %}
+        <a href="?page={{ tlist.next_page_number }}&date={{date}}&fromwhere={{fromwhere}}&towhere={{towhere}}">next</a> {% endif %}
+        </span>
+    </div>
 
 </body>
 

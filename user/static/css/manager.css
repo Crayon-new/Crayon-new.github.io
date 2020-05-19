@@ -1,0 +1,134 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+.left {
+    float: left;
+}
+
+.left1 {
+    float: left;
+    margin-left: 180px;
+}
+
+.right {
+    float: right;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+ol,
+ul {
+    list-style-type: none;
+}
+
+.container {
+    width: 1280px;
+    /* border: solid #f00; */
+    margin: 0px auto;
+    z-index: 999;
+}
+
+.back {
+    background: radial-gradient(circle closest-side at 60% 43%, rgb(46, 153, 196) 26%, rgba(187, 0, 51, 0) 27%), radial-gradient(circle closest-side at 40% 43%, rgb(46, 153, 196) 26%, rgba(187, 0, 51, 0) 27%), radial-gradient(circle closest-side at 40% 22%, rgb(54, 169, 245) 45%, rgba(221, 51, 85, 0) 46%), radial-gradient(circle closest-side at 60% 22%, rgb(54, 169, 245), rgba(221, 51, 85, 0) 46%), radial-gradient(circle closest-side at 50% 35%, rgb(54, 169, 245), rgba(221, 51, 85, 0) 31%), radial-gradient(circle closest-side at 60% 43%, rgb(46, 153, 196) 26%, rgba(187, 0, 51, 0) 27%) 50px 50px, radial-gradient(circle closest-side at 40% 43%, rgb(46, 153, 196) 26%, rgba(187, 0, 51, 0) 27%) 50px 50px, radial-gradient(circle closest-side at 40% 22%, rgb(54, 169, 245) 45%, rgba(221, 51, 85, 0) 46%) 50px 50px, radial-gradient(circle closest-side at 60% 22%, rgb(54, 169, 245) 45%, rgba(221, 51, 85, 0) 46%) 50px 50px, radial-gradient(circle closest-side at 50% 35%, rgb(54, 169, 245)30%, rgba(221, 51, 85, 0) 31%) 50px 50px;
+    background-color: rgb(46, 153, 196);
+    background-size: 100px 100px;
+}
+
+@keyframes gradientBG {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+#header {
+    height: 60px;
+    background-color: rgb(112, 173, 253);
+    z-index: 999;
+}
+
+#header .form1 {
+    font-size: 30px;
+    font-weight: 300px;
+    margin-top: 10px;
+    margin-right: 100px;
+}
+
+#header .wordstl1 {
+    font-size: 30px;
+    font-weight: 900;
+    color: darkcyan;
+}
+
+#header .train_img {
+    width: 54px;
+    height: 65px;
+    background: url("../img/img1.jpg") no-repeat;
+}
+
+#header .wordstl2 {
+    font-size: 20px;
+    font-weight: 300px;
+}
+
+#header .h_left {
+    width: 250px;
+    margin-right: 250px;
+}
+
+#left_nav {
+    width: 200px;
+    height: 800px;
+    padding-top: 60px;
+}
+
+#left_nav .real_nav {
+    width: 200px;
+    height: 850px;
+    border: 1px solid black;
+    background-color: cadetblue;
+}
+
+.left_a1 {
+    float: none;
+    width: 200px;
+    height: 32px;
+    margin-top: 100px;
+    background: rgb(122, 182, 184);
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.left_a2 {
+    float: none;
+    width: 200px;
+    height: 32px;
+    margin-top: 100px;
+    background-color: cadetblue;
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.left_top {
+    font-size: 20px;
+}
+
+.left_a3 {
+    float: none;
+    width: 200px;
+    height: 32px;
+    margin-top: 100px;
+    background-color: cadetblue;
+    font-size: 20px;
+    font-weight: 900;
+}

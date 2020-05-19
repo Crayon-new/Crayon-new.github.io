@@ -1,5 +1,7 @@
 from django.http import HttpResponse
 import random
+import re
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
 from django import forms
 from datetime import date
@@ -22,6 +24,7 @@ loginUser = "" #正在使用网站的个体
 #登录注册注销操作
 def hello(request):
      return render(request,'index.html')
+     
 def login(request):
     return render(request,'login.html')
 
@@ -37,16 +40,24 @@ def submit2(request):
            return HttpResponse("不可重复登录")
       res = m.validate(username2, password2)
       if  res!=False:
-          loginUser = username2
-          response = HttpResponse("欢迎!"+" "+loginUser)
-                #将username2写入浏览器cookie,失效时间为3600
+          if res.user_type == 'SuperUser':
+              loginUser = username2
+              response = HttpResponse("欢迎,尊敬的管理员"+" "+loginUser+" !  返回点击个人中心即可进入管理页面")
+          elif res.user_type=='Passenger':
+              loginUser = username2
+              response = HttpResponse("欢迎"+" "+loginUser)
+          #将username2写入浏览器cookie,失效时间为3600
           response.set_cookie('username',username2,3600)
+          response.set_cookie('password',password2,3600)
           return response
           return HttpResponse("欢迎!"+" "+request.COOKIES.get('username',''))
       else:
           return HttpResponse("密码错误或用户名不存在，请返回重新输入用户名密码！")
      except:
           return HttpResponse("错误")
+
+
+
 def logout(request):
    if not request.COOKIES.get('username','')=="":
     response = HttpResponse('logout !!'+request.COOKIES.get('username',''))
@@ -58,6 +69,9 @@ def logout(request):
  
 def regist(request):
     return render(request,'regist.html')
+
+
+
 def submit(request):
     global count1,i,username,password,email
     if request.method == 'POST':
@@ -103,9 +117,50 @@ def ticketQ(request):
     #    if date.today()>date:
     #        return HttpResponse('您选择的日期不在预售期范围内')
        tlist = m.search(date,fromwhere,towhere)
-       return render(request,'search.html',{'tlist':tlist})
+       tlist = Paginator(tlist, 5) # Show 25 contacts per page
+       page = request.GET.get('page')
+       try:
+        tlist = tlist.page(page)
+       except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+         tlist = tlist.page(1)
+       except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+         tlist = tlist.page(tlist.num_pages)
+       return render(request,'search.html',
+       {'tlist':tlist,
+       'fromwhere':fromwhere,
+       'towhere':towhere,
+       'date':date})
       else:
           return HttpResponse(loginUser)
+  else:
+    date = request.GET.get('date')
+    fromwhere = request.GET.get('fromwhere')
+    towhere = request.GET.get('towhere')
+    print(date)
+    print(fromwhere)
+    print(towhere)
+    page = request.GET.get('page')
+    print(page)
+    tlist = m.search(date,fromwhere,towhere)
+    tlist= Paginator(tlist, 5) # Show 25 contacts per page
+
+    try:
+        tlist = tlist.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        tlist = tlist.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        tlist = tlist.page(tlist.num_pages)
+    return render(request,'search.html',
+       {'tlist':tlist,
+       'fromwhere':fromwhere,
+       'towhere':towhere,
+       'date':date})
+
+
 
 def buy(request):
     if request.COOKIES.get('username','')=="":
@@ -128,12 +183,22 @@ def buy(request):
          return HttpResponse('请求错误！')
 
 
+
 def usercenter(request):
      if request.COOKIES.get('username','')=="":
         return HttpResponse('请先登录')
      else:
-      tlist = m.checkOrders(request.COOKIES.get('username',''))
-      return render(request,'usercenter.html',{'tlist':tlist})
+      res = m.checkUserType(request.COOKIES.get('username',''))
+      if res !=None: 
+       if res.user_type=='Passenger':
+        tlist = m.checkOrders(request.COOKIES.get('username',''))
+        return render(request,'usercenter.html',{'tlist':tlist})
+       elif res.user_type=='SuperUser':
+        return render(request,'managers.html',{'manager':request.COOKIES.get('username','')})
+      else:
+          return HttpResponse('错误')
+
+
 
 def refundticket(request):
     if request.method=='GET':
@@ -145,3 +210,5 @@ def refundticket(request):
               return HttpResponse('该订单已被处理')
     else:
          return HttpResponse('请求错误！')
+
+         
