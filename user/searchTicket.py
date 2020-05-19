@@ -69,8 +69,8 @@ class Manager:
                   )
             .filter(Station.station_name.like(ts+'%'))
             .filter(q0.c.num_of_tickets!=-1)
-            .order_by(desc(q0.c.Train_name))
             .order_by(asc(q0.c.depart_time))
+            .order_by(desc(q0.c.Train_name))
             .distinct()
         )
         res = q.all()
@@ -247,6 +247,8 @@ class Manager:
                 Station.station_name.label('to_station_name')
             )
             .join(Station, Station.station_id==q0.c.to_station_id)
+            .order_by(asc(q0.c.ticket_date))
+            .order_by(asc(q0.c.depart_time))
         )
         # session.close()
         res = q1.all()
@@ -295,15 +297,17 @@ class Manager:
             return False
         return True
 
-    def searchStationsOf(self, train_id):
+    def searchStationsOf(self, train_name):
         session = self.DBsession()
         q0 = (
             session.query(Station.station_id.label('station_id'),
                           Station.station_name.label('station_name'),
                           Station.city_name.label('city_name'),
-                          Ticket.train_id.label('train_id')),
-                          Ticket.available_flag.label('availabel_flag')
+                          Ticket.train_id.label('train_id'),
+                          Ticket.available_flag.label('available_flag'),
+                          Train.train_name.label('train_name'))
             .join(Ticket, Station.station_id==Ticket.from_station_id)
+            .join(Train, Train.train_id==Ticket.train_id)
             .subquery('q0')
               )
         q1 = (
@@ -311,9 +315,11 @@ class Manager:
                           q0.c.station_name.label('station_name'),
                           )
             .join(Ticket, q0.c.station_id==Ticket.to_station_id)
-            .filter((q0.c.train_id==train_id) | (Ticket.train_id==train_id))
+            .join(Train, Train.train_id==Ticket.train_id)
+            .filter((Train.train_name==train_name) | (q0.c.train_name == train_name))
             .filter((q0.c.available_flag==True) | (Ticket.available_flag==True))
             .distinct()
+            .order_by(asc(q0.c.station_id))
         )
         session.close()
         return q1.all()
