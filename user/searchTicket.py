@@ -354,7 +354,7 @@ class Manager:
         return True
 
 
-    def createStation(self, station_code, station_name, city_name, train_id):
+    def createStation(self, station_code, station_name, city_name):
         session = self.DBsession()
         station = Station()
         station.station_name = station_name
@@ -398,8 +398,18 @@ class Manager:
             return self.K_FAILED
         return self.K_SUCCESS
 
-    def updateTicketPrice(self, train_id, from_station, to_station, date, price):
-        se
+    def updateTicketPrice(self, ticket_id, price):
+        session = self.DBsession()
+        try:
+            (session.query(Ticket)
+             .filter(Ticket.ticket_id==ticket_id)
+             .update({Ticket.price: price})
+             )
+            session.commit()
+        except Exception:
+            session.rollback()
+            return self.K_FAILED
+        return self.K_SUCCESS
 
 class pUser:
     @staticmethod
