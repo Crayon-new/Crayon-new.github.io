@@ -5,13 +5,13 @@
 <head>
     <meta charset="UTF-8">
 
-    <link rel="stylesheet" type="text/css" href="{%static 'css/manager5.css' %}">
+    <link rel="stylesheet" type="text/css" href="{%static 'css/manager6.css' %}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>管理员界面</title>
 </head>
 
 
-<body class="back">
+<body class="back1">
     <!-- 页面的头部 -->
     <div id="header">
         <div class="container">
@@ -71,14 +71,14 @@
                 </table>
                 <div>
                     <span>
-                        {% if tlist.has_previous %}
-                            <a href="?page={{ tlist.previous_page_number }}&train_name={{train_name}}">previous</a>
+                        {% if Slist.has_previous %}
+                            <a href="?page={{ Slist.previous_page_number }}&train_name={{train_name}}">previous</a>
                         {% endif %}
                  
                         <span class="current">
                             Page {{ Slist.number }} of {{ Slist.paginator.num_pages }}.
                         </span> {% if Slist.has_next %}
-                    <a href="?page={{ tlist.next_page_number }}&train_name={{train_name}}">next</a> {% endif %}
+                    <a href="?page={{ Slist.next_page_number }}&train_name={{train_name}}">next</a> {% endif %}
                     </span>
                 </div>
                 <div class="addform2">

@@ -117,7 +117,7 @@ def ticketQ(request):
     #    if date.today()>date:
     #        return HttpResponse('您选择的日期不在预售期范围内')
        tlist = m.search(date,fromwhere,towhere)
-       tlist = Paginator(tlist, 5) # Show 25 contacts per page
+       tlist = Paginator(tlist, 25) # Show 25 contacts per page
        page = request.GET.get('page')
        try:
         tlist = tlist.page(page)
@@ -144,7 +144,7 @@ def ticketQ(request):
     page = request.GET.get('page')
     print(page)
     tlist = m.search(date,fromwhere,towhere)
-    tlist= Paginator(tlist, 5) # Show 25 contacts per page
+    tlist= Paginator(tlist, 25) # Show 25 contacts per page
 
     try:
         tlist = tlist.page(page)
@@ -222,7 +222,7 @@ def SeachAllStation(request):
         if Sform.is_valid():
             train_name = Sform.cleaned_data['train_name']
             Slist = m.searchStationsOf(train_name)
-            Slist = Paginator(Slist, 5) # Show 25 contacts per page
+            Slist = Paginator(Slist, 7) # Show 25 contacts per page
             page = request.GET.get('page')
             try:
               Slist = Slist.page(page)
@@ -238,12 +238,11 @@ def SeachAllStation(request):
         else:
           return HttpResponse(loginUser)
   else:
-    train_name = request.get('train_name')
+    train_name = request.GET.get('train_name')
     page = request.GET.get('page')
     print(page)
-    Slist = m.search(train_name)
-    Slist= Paginator(Slist, 5) # Show 25 contacts per page
-
+    Slist = m.searchStationsOf(train_name)
+    Slist= Paginator(Slist, 7) # Show 25 contacts per page
     try:
         Slist = Slist.page(page)
     except PageNotAnInteger:
@@ -253,7 +252,7 @@ def SeachAllStation(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
        Slist =Slist.page(Slist.num_pages)
     return render(request,'managers2.html',
-       {'Sist':Slist,
+       {'Slist':Slist,
       'train_name':train_name})
 
 def deleteS(request):
