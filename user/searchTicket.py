@@ -308,6 +308,7 @@ class Manager:
                           Train.train_name.label('train_name'))
             .join(Ticket, Station.station_id==Ticket.from_station_id)
             .join(Train, Train.train_id==Ticket.train_id)
+            .filter(Ticket.available_flag==True)
             .subquery('q0')
               )
         q1 = (
@@ -317,7 +318,7 @@ class Manager:
             .join(Ticket, q0.c.station_id==Ticket.to_station_id)
             .join(Train, Train.train_id==Ticket.train_id)
             .filter((Train.train_name==train_name) | (q0.c.train_name == train_name))
-            .filter((q0.c.available_flag==True) | (Ticket.available_flag==True))
+            .filter(Ticket.available_flag==True)
             .distinct()
             .order_by(asc(q0.c.station_id))
         )
@@ -396,6 +397,9 @@ class Manager:
             session.rollback()
             return self.K_FAILED
         return self.K_SUCCESS
+
+    def updateTicketPrice(self, train_id, from_station, to_station, date, price):
+        se
 
 class pUser:
     @staticmethod
