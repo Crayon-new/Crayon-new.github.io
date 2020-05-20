@@ -238,7 +238,7 @@ def SeachAllStation(request):
         else:
           return HttpResponse(loginUser)
   else:
-    tarin_name = request.get('train_name')
+    train_name = request.get('train_name')
     page = request.GET.get('page')
     print(page)
     Slist = m.search(train_name)
