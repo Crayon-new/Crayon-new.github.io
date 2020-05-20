@@ -301,29 +301,17 @@ class Manager:
         session = self.DBsession()
         q0 = (
             session.query(Station.station_id.label('station_id'),
-                          Station.station_name.label('station_name'),
-                          Station.city_name.label('city_name'),
-                          Ticket.train_id.label('train_id'),
-                          Ticket.available_flag.label('available_flag'),
-                          Train.train_name.label('train_name'))
-            .join(Ticket, Station.station_id==Ticket.from_station_id)
+                          Station.station_name.label('station_name'))
+            .join(Ticket, (Station.station_id==Ticket.from_station_id)
+                  | (Station.station_id==Ticket.to_station_id))
             .join(Train, Train.train_id==Ticket.train_id)
-            .filter(Ticket.available_flag==True)
-            .subquery('q0')
-              )
-        q1 = (
-            session.query(q0.c.station_id.label('station_id'),
-                          q0.c.station_name.label('station_name'),
-                          )
-            .join(Ticket, q0.c.station_id==Ticket.to_station_id)
-            .join(Train, Train.train_id==Ticket.train_id)
-            .filter((Train.train_name==train_name) | (q0.c.train_name == train_name))
             .filter(Ticket.available_flag==True)
             .distinct()
-            .order_by(asc(q0.c.station_id))
-        )
+            .order_by(asc(Station.station_id))
+              )
+        res = q0.all()
         session.close()
-        return q1.all()
+        return res
 
     def removeStationFrom(self, station_id, train_name):
         session = self.DBsession()
@@ -410,6 +398,41 @@ class Manager:
             session.rollback()
             return self.K_FAILED
         return self.K_SUCCESS
+
+    def updateTicketNum(self, ticket_id, num_of_tickets):
+        session = self.DBsession()
+        try:
+            (session.query(Ticket)
+             .filter(Ticket.ticket_id==ticket_id)
+             .update({Ticket.num_of_tickets: num_of_tickets})
+             )
+            session.commit()
+        except Exception:
+            session.rollback()
+            return self.K_FAILED
+        return self.K_SUCCESS
+
+    def updateTicketState(self, ticket_id, state):
+        session = self.DBsession()
+        q0 = (
+            session.query(Ticket)
+            .filter(Ticket.ticket_id==ticket_id)
+        )
+        res = q0.all()
+        for row in res:
+            if (row.available_flag == True) and (state==False):
+                (session.query(Order)
+                 .filter(Order.ticket_id==ticket_id)
+                 .update({Order.transaction_state: False})
+                 )
+        q0.update({Ticket.available_flag: False})
+        try:
+            session.commit()
+        except Exception:
+            session.rollback()
+            return self.K_FAILED
+        return self.K_SUCCESS
+
 
 class pUser:
     @staticmethod
