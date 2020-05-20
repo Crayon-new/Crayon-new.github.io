@@ -1,0 +1,136 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" type="text/css" href="{%static 'css/manager5.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理员界面</title>
+</head>
+
+
+<body class="back">
+    <!-- 页面的头部 -->
+    <div id="header">
+        <div class="container">
+            <div class="h_left left">
+                <a href="http://127.0.0.1:8000/">
+                    <div class="train_img left"></div>
+                    <div class="wordstl1">铁路12307</div>
+                    <div class="wordstl2">RAILWAY 12307</div>
+                </a>
+            </div>
+            <form action="" class="form1 left" method="GET">
+                <input type="text" placeholder="搜索车票/餐饮/常旅客/相关规章" style="width:300px; height:30px" name="headsearch" />
+                <input type="submit" name="search" class="green button" value="搜索" />
+            </form>
+        </div>
+        <!-- 左边导航栏 -->
+        <div id="left_nav">
+            <div class="real_nav ">
+                <div class="s_left ">
+                    <div class="left_top">管理员:{{manager}}</div>
+                    <div class="left_top">级别:SuperUser</div>
+                    <a href="1">
+                        <div class="left_a2" onclick="showText1()" id="l_a1">&nbsp&nbsp用&nbsp&nbsp&nbsp&nbsp户&nbsp&nbsp&nbsp&nbsp管&nbsp&nbsp&nbsp&nbsp&nbsp理
+                        </div>
+                    </a>
+                    <a href="2">
+                        <div class="left_a3" onclick="showText2()" id="l_a2">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp车&nbsp&nbsp&nbsp&nbsp站</div>
+                    </a>
+                    <a href="3">
+                        <div class="left_a1" onclick="showText3()" id="l_a3">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp车&nbsp&nbsp&nbsp&nbsp&nbsp票</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="Right" class="right">
+            <div id="Right" class="right">
+                <div class="addform3 left">
+
+                    <div class="adds">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp为列车增加车票</div>
+                    <form method="POST" action="addT">
+                        {% csrf_token %}&nbsp&nbsp&nbsp&nbsp出发日期*:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{ form }} <input type="date" name="Date" class="input_style2" autocomplete="off"><br>&nbsp&nbsp&nbsp&nbsp始发站*:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <input type="text" name="Start" class="input_style2" placeholder=""><br>&nbsp&nbsp&nbsp&nbsp终点站:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <input type="text" class="input_style2" name="End"><br>&nbsp&nbsp&nbsp&nbsp上车站:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <input type="text" class="input_style2" name="From"><br>&nbsp&nbsp&nbsp&nbsp下车站:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <input type="text" class="input_style2" name="To"><br>&nbsp&nbsp&nbsp&nbsp上车时间:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <input type="time" class="input_style2" name="depart"><br>&nbsp&nbsp&nbsp&nbsp下车时间:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <input type="time" class="input_style2" name="arrive"><br>&nbsp&nbsp&nbsp&nbsp乘车跨过天数:
+                        <input type="text" class="input_style2" name="diff"><br>&nbsp&nbsp&nbsp&nbsp列车id:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <input type="text" class="input_style2" name="train_id"><br>&nbsp&nbsp&nbsp&nbsp增加票数:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <input type="text" class="input_style2" name="ticketnum"><br>&nbsp&nbsp&nbsp&nbsp座位类型:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <input type="text" class="input_style2" name="seat_type"><br>&nbsp&nbsp&nbsp&nbsp票价：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <input type="text" class="input_style2" name="price">
+                        <br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <input type="submit" name="search" class="green button" value="提交" />
+                    </form>
+                </div>
+                <div class="addform4">
+                    <div class="adds">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp更新票价</div>
+                    <form method="POST" action="upT">
+                        {% csrf_token %} &nbsp&nbsp&nbsp车票id*:
+                        <input type="text" name="ticket_id" class="input_style2" placeholder=""><br> &nbsp&nbsp&nbsp新票价*:
+                        <input type="text" name="price" class="input_style2" placeholder="">
+                        <br> <br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        <input type="submit" name="search" class="blue button" value="提交" />
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+</body>
+<script>
+    function showText1() {
+
+        var t1 = document.getElementById("l_a1");
+        t1.style.background = "rgb(122, 182, 184)";
+
+        var t2 = document.getElementById("l_a2");
+        t2.style.background = " cadetblue";
+
+        var t3 = document.getElementById("l_a3");
+        t3.style.background = "cadetblue";
+    }
+
+    function showText2() {
+
+        var t1 = document.getElementById("l_a1");
+        t1.style.background = " cadetblue";
+
+        var t2 = document.getElementById("l_a2");
+        t2.style.background = "rgb(122, 182, 184)";
+
+        var t3 = document.getElementById("l_a3");
+        t3.style.background = " cadetblue";
+
+        var test2 = document.getElementById("s2");
+        test2.style.display = "block";
+    }
+
+    function showTable() {
+        var t = document.getElementById("t")
+        t.style.display = "block";
+    }
+
+    function showText3() {
+
+        var t1 = document.getElementById("l_a1");
+        t1.style.background = " cadetblue";
+
+        var t2 = document.getElementById("l_a2");
+        t2.style.background = " cadetblue";
+        var t3 = document.getElementById("l_a3");
+        t3.style.background = "rgb(122, 182, 184)";
+
+    }
+</script>
+
+</html>
