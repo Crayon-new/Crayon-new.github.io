@@ -324,8 +324,13 @@ class Manager:
         session.close()
         return q1.all()
 
-    def removeStationFrom(self, station_id, train_id):
+    def removeStationFrom(self, station_id, train_name):
         session = self.DBsession()
+        try:
+            train_id = session.query(Train).filter(Train.train_name==train_name).first().train_id
+        except Exception:
+            session.close()
+            return self.K_FAILED
         q0 = (
             session.query(Ticket)
             .filter((Ticket.train_id==train_id)
