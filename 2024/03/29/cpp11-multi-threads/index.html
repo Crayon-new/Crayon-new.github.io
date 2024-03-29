@@ -25,14 +25,14 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="1. C++ 11 引入的时间标准库：std::chrono1234567#include &lt;chrono&gt;&#x2F;&#x2F;duration_cast 在不同的duration&lt;T, R&gt;类型之间转换, T,R 表示数字类型和时间单位类型auto t0 &#x3D; std::chrono::steady_clock::now();auto t1 &#x3D; std::chrono::steady_cl">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/2024/03/29/cpp11-multi-threads/image-20240329221911202.png">
-<meta property="og:image" content="http://example.com/2024/03/29/cpp11-multi-threads/image-20240329223636128.png">
+<meta property="og:image" content="http://example.com/image-20240329221911202.png">
+<meta property="og:image" content="http://example.com/image-20240329223636128.png">
 <meta property="article:published_time" content="2024-03-29T12:12:08.000Z">
-<meta property="article:modified_time" content="2024-03-29T14:36:43.314Z">
+<meta property="article:modified_time" content="2024-03-29T14:43:02.261Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="多线程">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2024/03/29/cpp11-multi-threads/image-20240329221911202.png">
+<meta name="twitter:image" content="http://example.com/image-20240329221911202.png">
     
     
     <!--- Icon Part-->
@@ -364,7 +364,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">6</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">4</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -418,8 +418,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-03-29 22:36:43</span>
-            <span class="mobile">2024-03-29 22:36:43</span>
+            <span class="desktop">2024-03-29 22:43:02</span>
+            <span class="mobile">2024-03-29 22:43:02</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -510,11 +510,11 @@
 
 
 <p>作为一个 C++ 类，std::thread 同样遵循 RAII 思想和三五法则：因为<strong>管理着资源，他自定义了解构函数，删除了拷贝构造&#x2F;赋值函数，但是提供了移动构造&#x2F;赋值函数。</strong>  防止二次释放资源，这就带来一个问题，当出了线程的作用域之后：std::thread 的解构函数会销毁(栈上分配)线程</p>
-<p><img lazyload src="/images/loading.svg" data-src="/2024/03/29/cpp11-multi-threads/image-20240329221911202.png" alt="image-20240329221911202"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/image-20240329221911202.png" alt="image-20240329221911202"></p>
 <h4 id="解构函数不再销毁线程：-t1-detach"><a href="#解构函数不再销毁线程：-t1-detach" class="headerlink" title="解构函数不再销毁线程： t1.detach()"></a>解构函数不再销毁线程： t1.detach()</h4><p>意味着线程的生命周期不再由当前 std::thread 对象管理，而是在线程退出以后自动销毁自己。</p>
 <p>但是detach之后主进程不会等待所有子进程结束，没有join的作用，</p>
 <h4 id="解构函数不再销毁线程：-移动到全局线程池"><a href="#解构函数不再销毁线程：-移动到全局线程池" class="headerlink" title="解构函数不再销毁线程： 移动到全局线程池"></a>解构函数不再销毁线程： 移动到全局线程池</h4><p>因此另一种解法是将t1对象移动（std::move 会调用移动函数）到另一个全局变量中（比如vector &lt;std::thread&gt; ）</p>
-<p><img lazyload src="/images/loading.svg" data-src="/2024/03/29/cpp11-multi-threads/image-20240329223636128.png" alt="image-20240329223636128"></p>
+<p><img lazyload src="/images/loading.svg" data-src="/image-20240329223636128.png" alt="image-20240329223636128"></p>
 
         </div>
 
@@ -529,7 +529,7 @@
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-03-29 22:36:43
+                    :</strong> 2024-03-29 22:43:02
             </li>
         
         <li>
@@ -670,7 +670,7 @@
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        6 posts in total
+                        4 posts in total
                     </span>
                     
                 </p>
