@@ -13,25 +13,26 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="http://example.com/2024/03/26/git操作实践/"/>
+    <link rel="canonical" href="http://example.com/2024/03/29/cpp11-multi-threads/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="查看分支关联情况  1git branch -vv   创建新分支并关联到指定分支  1git checkout -b main  origin&#x2F;main    git rebase的作用">
+        <meta name="description" content="1. C++ 11 引入的时间标准库：std::chrono1234567#include &lt;chrono&gt;&#x2F;&#x2F;duration_cast 在不同的duration&lt;T, R&gt;类型之间转换, T,R 表示数字类型和时间单位类型auto t0 &#x3D; std::chrono::steady_clock::now();auto t1 &#x3D; std::chrono::steady_cl">
 <meta property="og:type" content="article">
-<meta property="og:title" content="git操作实践">
-<meta property="og:url" content="http://example.com/2024/03/26/git%E6%93%8D%E4%BD%9C%E5%AE%9E%E8%B7%B5/index.html">
+<meta property="og:title" content="cpp11_multi_threads">
+<meta property="og:url" content="http://example.com/2024/03/29/cpp11-multi-threads/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="查看分支关联情况  1git branch -vv   创建新分支并关联到指定分支  1git checkout -b main  origin&#x2F;main    git rebase的作用">
+<meta property="og:description" content="1. C++ 11 引入的时间标准库：std::chrono1234567#include &lt;chrono&gt;&#x2F;&#x2F;duration_cast 在不同的duration&lt;T, R&gt;类型之间转换, T,R 表示数字类型和时间单位类型auto t0 &#x3D; std::chrono::steady_clock::now();auto t1 &#x3D; std::chrono::steady_cl">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/image-20240329152755770.png">
-<meta property="og:image" content="http://example.com/image-20240329152627171.png">
-<meta property="article:published_time" content="2024-03-26T06:46:00.000Z">
-<meta property="article:modified_time" content="2024-03-29T07:29:53.684Z">
+<meta property="og:image" content="http://example.com/2024/03/29/cpp11-multi-threads/image-20240329221911202.png">
+<meta property="og:image" content="http://example.com/2024/03/29/cpp11-multi-threads/image-20240329223636128.png">
+<meta property="article:published_time" content="2024-03-29T12:12:08.000Z">
+<meta property="article:modified_time" content="2024-03-29T14:36:43.314Z">
 <meta property="article:author" content="John Doe">
+<meta property="article:tag" content="多线程">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/image-20240329152755770.png">
+<meta name="twitter:image" content="http://example.com/2024/03/29/cpp11-multi-threads/image-20240329221911202.png">
     
     
     <!--- Icon Part-->
@@ -43,7 +44,7 @@
     
     <title>
         
-            git操作实践 -
+            cpp11_multi_threads -
         
         CS Notes
     </title>
@@ -355,7 +356,7 @@
 
         <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">1</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">2</div>
         <div class="label text-third-text-color text-sm">Tags</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
@@ -363,7 +364,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">7</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">6</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -389,7 +390,7 @@
         <div class="article-title relative w-full">
             
                 <div class="w-full flex items-center pt-6 justify-start">
-                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">git操作实践</h1>
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">cpp11_multi_threads</h1>
                 </div>
             
             </div>
@@ -410,15 +411,15 @@
                         <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2024-03-26 14:46</span>
-        <span class="mobile">2024-03-26 14:46</span>
+        <span class="desktop">2024-03-29 20:12:08</span>
+        <span class="mobile">2024-03-29 20:12:08</span>
         <span class="hover-info">Created</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-03-29 15:29:53</span>
-            <span class="mobile">2024-03-29 15:29:53</span>
+            <span class="desktop">2024-03-29 22:36:43</span>
+            <span class="mobile">2024-03-29 22:36:43</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -432,7 +433,17 @@
                     
                         
                         <li>
-                            <a href="/categories/git/">git</a>&nbsp;
+                            <a href="/categories/%E8%AF%AD%E8%A8%80/">语言</a>&nbsp;
+                        </li>
+                    
+                    
+                
+                    
+                        
+                            <li>></li>
+                        
+                        <li>
+                            <a href="/categories/%E8%AF%AD%E8%A8%80/C/">C++</a>&nbsp;
                         </li>
                     
                     
@@ -440,6 +451,17 @@
             </ul>
         </span>
     
+    
+        <span class="article-tags article-meta-item">
+            <i class="fa-regular fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">多线程</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
     
 
     
@@ -461,25 +483,38 @@
 
 
         <div class="article-content markdown-body px-2 sm:px-6 md:px-8 pb-8">
-            <ol>
-<li>查看分支关联情况</li>
-</ol>
-<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -vv</span><br></pre></td></tr></table></figure></div>
+            <h3 id="1-C-11-引入的时间标准库：std-chrono"><a href="#1-C-11-引入的时间标准库：std-chrono" class="headerlink" title="1. C++ 11 引入的时间标准库：std::chrono"></a>1. C++ 11 引入的时间标准库：std::chrono</h3><div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;chrono&gt;</span></span></span><br><span class="line"><span class="comment">//duration_cast 在不同的duration&lt;T, R&gt;类型之间转换, T,R 表示数字类型和时间单位类型</span></span><br><span class="line"><span class="keyword">auto</span> t0 = std::chrono::steady_clock::<span class="built_in">now</span>();</span><br><span class="line"><span class="keyword">auto</span> t1 = std::chrono::steady_clock::<span class="built_in">now</span>();</span><br><span class="line"><span class="keyword">auto</span> dt = t1 - t0;</span><br><span class="line"><span class="keyword">using</span> double_ms = std::chrono::duration&lt;<span class="type">double</span>, std::milli&gt;;</span><br><span class="line">doubls ms = std::chrono::<span class="built_in">duration_castd</span>&lt;double_ms&gt;(dt).<span class="built_in">count</span>();</span><br></pre></td></tr></table></figure></div>
 
-<ol start="2">
-<li>创建新分支并关联到指定分支</li>
-</ol>
-<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b main  origin/main</span><br></pre></td></tr></table></figure></div>
+<h4 id="跨平台sleep：-std-this-thread-sleep-for"><a href="#跨平台sleep：-std-this-thread-sleep-for" class="headerlink" title="跨平台sleep： std::this_thread::sleep_for"></a>跨平台sleep： std::this_thread::sleep_for</h4><p>引入<thread></thread></p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;chrono&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::this_thread::<span class="built_in">sleep_for</span>(std::chrono::<span class="built_in">milliseconds</span>(<span class="number">4000</span>));</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="跨平台sleep：-std-this-thread-sleep-until"><a href="#跨平台sleep：-std-this-thread-sleep-until" class="headerlink" title="跨平台sleep： std::this_thread::sleep_until"></a>跨平台sleep： std::this_thread::sleep_until</h4><div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> t = std::chrono::steady_clock::<span class="built_in">now</span>() + std::chrono::<span class="built_in">milliseconds</span>(<span class="number">4000</span>);</span><br><span class="line">    std::this_thread::<span class="built_in">sleep_for</span>(std::chrono::<span class="built_in">seconds</span>(<span class="number">4</span>));</span><br><span class="line">    std::this_thread::<span class="built_in">sleep_until</span>(t);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 
 
-<p>git rebase的作用</p>
-<img lazyload src="/images/loading.svg" data-src="/image-20240329152755770.png" alt="image-20240329152755770" style="zoom: 25%;">
+<h3 id="2-线程"><a href="#2-线程" class="headerlink" title="2. 线程"></a>2. 线程</h3><p>经典问题：线程进程协程的区别（或者分别说一下三者）</p>
+<p>进程、线程和协程是计算机程序执行的三个不同层次。</p>
+<p><strong>进程（Process）</strong>： 进程是操作系统进行资源分配和调度的基本单位，是一个独立运行的程序实体。每个进程拥有独立的内存空间、文件描述符、寄存器状态等资源。进程之间的资源是相互隔离的，因此进程间通信需要通过操作系统提供的特定机制（如管道、消息队列、共享内存等）进行。由于进程拥有独立的资源，所以进程间的切换和调度开销较大。进程本身不能</p>
+<p><strong>线程（Thread）</strong>： 线程是操作系统调度执行的最小单位，是进程内的一个执行流。一个进程可以拥有多个线程，这些线程共享进程的资源（如内存空间、文件描述符等）。由于线程共享相同的资源，线程间通信相对简单，可以直接通过共享变量、锁等方式进行。线程相较于进程，上下文切换和调度开销较小。但多个线程并发执行时，需要处理好同步和互斥问题，以避免数据不一致或竞争条件。</p>
+<p><strong>协程（Coroutine</strong>）： 协程是一种用户态的轻量级线程，它的调度和切换完全由程序控制，不依赖于操作系统的调度。协程之间共享线程的资源，因此协程间通信也可以通过共享变量、锁等方式进行。协程的优势在于能够轻松地实现高并发，因为协程切换和调度的开销非常小。<strong>协程适用于I&#x2F;O密集型任务</strong>，通过异步I&#x2F;O可以有效地提高程序的性能。</p>
+<h4 id="现代C-中的多线程"><a href="#现代C-中的多线程" class="headerlink" title="现代C++中的多线程"></a>现代C++中的多线程</h4><ul>
+<li>C++11 开始，为多线程提供语言级别的支持。std::thread</li>
+</ul>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;thread&gt;</span><br><span class="line">std::thread t1[&amp;] &#123;</span><br><span class="line">     # do someting;</span><br><span class="line">&#125;;</span><br><span class="line">编译时需要CMakeLists.txt 里链接 Threads::Threads 或者 g++ -pthread</span><br></pre></td></tr></table></figure></div>
 
-<img lazyload src="/images/loading.svg" data-src="/image-20240329152627171.png" alt="image-20240329152733421" style="zoom: 25%;">
+
+
+<h4 id="主进程等待子进程结束"><a href="#主进程等待子进程结束" class="headerlink" title="主进程等待子进程结束"></a>主进程等待子进程结束</h4><p>利用std::thread类的成员函数join()  <em>翻译成等待更好</em>  等待子进程结束</p>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="function">std::thread <span class="title">t1</span><span class="params">([&amp;] &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">        download(<span class="string">&quot;hello.zip&quot;</span>);</span></span></span><br><span class="line"><span class="params"><span class="function">    &#125;)</span></span>;</span><br><span class="line">    <span class="built_in">interact</span>();</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Waiting for child thread...&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    t1.<span class="built_in">join</span>();</span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;Child thread exited!&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
 
 
 
+<p>作为一个 C++ 类，std::thread 同样遵循 RAII 思想和三五法则：因为<strong>管理着资源，他自定义了解构函数，删除了拷贝构造&#x2F;赋值函数，但是提供了移动构造&#x2F;赋值函数。</strong>  防止二次释放资源，这就带来一个问题，当出了线程的作用域之后：std::thread 的解构函数会销毁(栈上分配)线程</p>
+<p><img lazyload src="/images/loading.svg" data-src="/2024/03/29/cpp11-multi-threads/image-20240329221911202.png" alt="image-20240329221911202"></p>
+<h4 id="解构函数不再销毁线程：-t1-detach"><a href="#解构函数不再销毁线程：-t1-detach" class="headerlink" title="解构函数不再销毁线程： t1.detach()"></a>解构函数不再销毁线程： t1.detach()</h4><p>意味着线程的生命周期不再由当前 std::thread 对象管理，而是在线程退出以后自动销毁自己。</p>
+<p>但是detach之后主进程不会等待所有子进程结束，没有join的作用，</p>
+<h4 id="解构函数不再销毁线程：-移动到全局线程池"><a href="#解构函数不再销毁线程：-移动到全局线程池" class="headerlink" title="解构函数不再销毁线程： 移动到全局线程池"></a>解构函数不再销毁线程： 移动到全局线程池</h4><p>因此另一种解法是将t1对象移动（std::move 会调用移动函数）到另一个全局变量中（比如vector &lt;std::thread&gt; ）</p>
+<p><img lazyload src="/images/loading.svg" data-src="/2024/03/29/cpp11-multi-threads/image-20240329223636128.png" alt="image-20240329223636128"></p>
 
         </div>
 
@@ -487,18 +522,18 @@
             <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
                 <div class="article-copyright-info-container">
     <ul>
-        <li><strong>Title:</strong> git操作实践</li>
+        <li><strong>Title:</strong> cpp11_multi_threads</li>
         <li><strong>Author:</strong> Crayon</li>
         <li><strong>Created at
-                :</strong> 2024-03-26 14:46:00</li>
+                :</strong> 2024-03-29 20:12:08</li>
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-03-29 15:29:53
+                    :</strong> 2024-03-29 22:36:43
             </li>
         
         <li>
-            <strong>Link:</strong> https://redefine.ohevan.com/2024/03/26/git操作实践/
+            <strong>Link:</strong> https://redefine.ohevan.com/2024/03/29/cpp11-multi-threads/
         </li>
         <li>
             <strong>
@@ -517,35 +552,28 @@
         
 
         
+            <ul class="post-tags-box text-lg mt-1.5 flex-wrap justify-center flex md:hidden">
+                
+                    <li class="tag-item mx-0.5">
+                        <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/">#多线程</a>&nbsp;
+                    </li>
+                
+            </ul>
+        
 
         
 
         
             <div class="article-nav my-8 flex justify-between items-center px-2 sm:px-6 md:px-8">
                 
-                    <div class="article-prev border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
-                        <a class="prev"
-                        rel="prev"
-                        href="/2024/03/26/RAII%20%E4%B8%8E%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/"
-                        >
-                            <span class="left arrow-icon flex justify-center items-center">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </span>
-                            <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">RAII 与智能指针</span>
-                                <span class="post-nav-item">Prev posts</span>
-                            </span>
-                        </a>
-                    </div>
-                
                 
                     <div class="article-next border-border-color shadow-redefine-flat shadow-shadow-color-2 rounded-medium px-4 py-2 hover:shadow-redefine-flat-hover hover:shadow-shadow-color-2">
                         <a class="next"
                         rel="next"
-                        href="/2024/03/23/hello-world/"
+                        href="/2024/03/29/git-ops/"
                         >
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">Hello World</span>
+                                <span class="post-nav-title-item">git_ops</span>
                                 <span class="post-nav-item">Next posts</span>
                             </span>
                             <span class="right arrow-icon flex justify-center items-center">
@@ -608,8 +636,8 @@
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">git操作实践</div>
-        
+        <div class="page-title">cpp11_multi_threads</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-C-11-%E5%BC%95%E5%85%A5%E7%9A%84%E6%97%B6%E9%97%B4%E6%A0%87%E5%87%86%E5%BA%93%EF%BC%9Astd-chrono"><span class="nav-text">1. C++ 11 引入的时间标准库：std::chrono</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BA%BF%E7%A8%8B"><span class="nav-text">2. 线程</span></a></li></ol>
 
     </div>
 </div>
@@ -642,7 +670,7 @@
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        7 posts in total
+                        6 posts in total
                     </span>
                     
                 </p>
