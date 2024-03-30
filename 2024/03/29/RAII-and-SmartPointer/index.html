@@ -20,15 +20,16 @@
     
         <meta name="description" content="先做总结以下类型时安全的  int  等基础类型 STL 容器 智能指针 原始指针，如果是从智能指针中.get() 出来的  以下对象是不安全的：  管理资源的对象 原始指针 通过malloc&#x2F;free 或者new&#x2F;delete 分配的 STL 容器但是管理类不安全的对象  最好的判断方式是：如果你不需要自定义的解构函数，那么这个类就不需要担心 因为如果用到了自定义解构">
 <meta property="og:type" content="article">
-<meta property="og:title" content="RAII_and_SmartPointer">
+<meta property="og:title" content="RAII和智能指针">
 <meta property="og:url" content="http://example.com/2024/03/29/RAII-and-SmartPointer/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="先做总结以下类型时安全的  int  等基础类型 STL 容器 智能指针 原始指针，如果是从智能指针中.get() 出来的  以下对象是不安全的：  管理资源的对象 原始指针 通过malloc&#x2F;free 或者new&#x2F;delete 分配的 STL 容器但是管理类不安全的对象  最好的判断方式是：如果你不需要自定义的解构函数，那么这个类就不需要担心 因为如果用到了自定义解构">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/2024/03/29/RAII-and-SmartPointer/image-20240329215503810.png">
 <meta property="og:image" content="http://example.com/2024/03/29/RAII-and-SmartPointer/image-20240329215537941.png">
+<meta property="og:image" content="http://example.com/2024/03/29/RAII-and-SmartPointer/image-20240330161958802.png">
 <meta property="article:published_time" content="2024-03-29T13:57:32.000Z">
-<meta property="article:modified_time" content="2024-03-29T15:51:42.928Z">
+<meta property="article:modified_time" content="2024-03-30T08:20:56.721Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="指针">
 <meta property="article:tag" content="内存管理">
@@ -45,7 +46,7 @@
     
     <title>
         
-            RAII_and_SmartPointer -
+            RAII和智能指针 -
         
         CS Notes
     </title>
@@ -357,7 +358,7 @@
 
         <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">4</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">5</div>
         <div class="label text-third-text-color text-sm">Tags</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
@@ -365,7 +366,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">6</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">7</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -391,7 +392,7 @@
         <div class="article-title relative w-full">
             
                 <div class="w-full flex items-center pt-6 justify-start">
-                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">RAII_and_SmartPointer</h1>
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">RAII和智能指针</h1>
                 </div>
             
             </div>
@@ -419,8 +420,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-03-29 23:51:42</span>
-            <span class="mobile">2024-03-29 23:51:42</span>
+            <span class="desktop">2024-03-30 16:20:56</span>
+            <span class="mobile">2024-03-30 16:20:56</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -511,6 +512,36 @@
 <li>管理资源：删除拷贝（构造&#x2F;赋值）函数，然后用智能指针进行管理</li>
 <li>数据结构：如果可以，定义拷贝和移动</li>
 </ol>
+<h3 id="智能指针"><a href="#智能指针" class="headerlink" title="智能指针"></a>智能指针</h3><h4 id="1-Unique-ptr"><a href="#1-Unique-ptr" class="headerlink" title="1. Unique_ptr"></a>1. Unique_ptr</h4><div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;memory&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">C</span> &#123;</span><br><span class="line">    <span class="built_in">C</span>() &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;分配内存!\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    ~<span class="built_in">C</span>() &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;释放内存!\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">do_something</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;成员函数!\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(std::unique_ptr&lt;C&gt; p)</span> </span>&#123;</span><br><span class="line">    p-&gt;<span class="built_in">do_something</span>();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::unique_ptr&lt;C&gt; p = std::<span class="built_in">make_unique</span>&lt;C&gt;();</span><br><span class="line">    <span class="built_in">func</span>(p);  <span class="comment">// 出错</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
+
+<p>上述代码可以看到unique_ptr 为了满足三五法则删除了默认的拷贝函数</p>
+<p>如何解决需要拷贝的场景</p>
+<ol>
+<li>获取原始指针</li>
+</ol>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(C* p)</span> </span>&#123;</span><br><span class="line">    p-&gt;<span class="built_in">do_something</span>();  <span class="comment">// 注意函数中并不会管理p的生命周期</span></span><br><span class="line">&#125;</span><br><span class="line">... ... </span><br><span class="line"><span class="built_in">fun</span>(p.<span class="built_in">get</span>()); </span><br></pre></td></tr></table></figure></div>
+
+<ol start="2">
+<li>不能拷贝，但可以移动，适用于需要管理生命周期的场景</li>
+</ol>
+<div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(std::unique_ptr&lt;C&gt; p)</span> </span>&#123;</span><br><span class="line">    objlist.<span class="built_in">push_back</span>(std::<span class="built_in">move</span>(p));  <span class="comment">// 进一步移动到 objlist</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::unique_ptr&lt;C&gt; p = std::<span class="built_in">make_unique</span>&lt;C&gt;();</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;移交前：%p\n&quot;</span>, p.<span class="built_in">get</span>());  <span class="comment">// 不为 null</span></span><br><span class="line">    <span class="built_in">func</span>(std::<span class="built_in">move</span>(p));    <span class="comment">// 通过移动构造函数，转移指针控制权</span></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;移交后：%p\n&quot;</span>, p.<span class="built_in">get</span>());  <span class="comment">// null，因为移动会清除原对象</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h4 id="2-更加智能的指针：shared-ptr"><a href="#2-更加智能的指针：shared-ptr" class="headerlink" title="2. 更加智能的指针：shared_ptr"></a>2. 更加智能的指针：shared_ptr</h4><ul>
+<li><p>unique_ptr 使用起来很困难的原因，在于 unique_ptr 解决重复释放的方式是禁止拷贝，这样虽然有效率高的优势，但导致使用困难，容易犯错等。</p>
+</li>
+<li><p>相比之下， 牺牲效率换来自由度的 shared_ptr 则允许拷贝，他解决重复释放的方式是通过引用计数</p>
+<ul>
+<li>当一个 shared_ptr 初始化时，将计数器设为1。</li>
+<li>当一个 shared_ptr 被拷贝时，计数器加1。</li>
+<li>当一个 shared_ptr 被解构时，计数器减1。减到0时，则自动销毁他指向的对象。</li>
+</ul>
+</li>
+</ul>
+<p>我们可以用p.use_count() 来获取当前指针的引用计数</p>
+<p>这样会有一个潜在的问题，就是当两个shared_ptr 互相引用时，会出现无法释放的问题，比如说双向链表。</p>
+<p><img lazyload src="/images/loading.svg" data-src="/2024/03/29/RAII-and-SmartPointer/image-20240330161958802.png" alt="image-20240330161958802"></p>
+<p>解决方式：使用weak_ptr 不影响shared_ptr 的计数</p>
+<p>有时候我们希望维护一个 shared_ptr 的弱引用 weak_ptr，即：弱引用的拷贝与解构不影响其引用计数器。<br>之后有需要时，可以通过 lock() 随时产生一个新的 shared_ptr 作为强引用。但不 lock 的时候不影响计数。<br>如果失效（计数器归零）则 expired() 会返回 false，且 lock() 也会返回 nullptr</p>
 
         </div>
 
@@ -518,14 +549,14 @@
             <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
                 <div class="article-copyright-info-container">
     <ul>
-        <li><strong>Title:</strong> RAII_and_SmartPointer</li>
+        <li><strong>Title:</strong> RAII和智能指针</li>
         <li><strong>Author:</strong> Crayon</li>
         <li><strong>Created at
                 :</strong> 2024-03-29 21:57:32</li>
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-03-29 23:51:42
+                    :</strong> 2024-03-30 16:20:56
             </li>
         
         <li>
@@ -575,7 +606,7 @@
                                 <i class="fa-solid fa-chevron-left"></i>
                             </span>
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">STL_LIB</span>
+                                <span class="post-nav-title-item">STL标准库</span>
                                 <span class="post-nav-item">Prev posts</span>
                             </span>
                         </a>
@@ -588,7 +619,7 @@
                         href="/2024/03/29/cpp11-multi-threads/"
                         >
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">cpp11_multi_threads</span>
+                                <span class="post-nav-title-item">cpp11_多线程</span>
                                 <span class="post-nav-item">Next posts</span>
                             </span>
                             <span class="right arrow-icon flex justify-center items-center">
@@ -651,8 +682,8 @@
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">RAII_and_SmartPointer</div>
-        
+        <div class="page-title">RAII和智能指针</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88"><span class="nav-text">智能指针</span></a></li></ol>
 
     </div>
 </div>
@@ -685,7 +716,7 @@
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        6 posts in total
+                        7 posts in total
                     </span>
                     
                 </p>

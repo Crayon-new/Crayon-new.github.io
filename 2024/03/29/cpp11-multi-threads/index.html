@@ -20,7 +20,7 @@
     
         <meta name="description" content="1. C++ 11 引入的时间标准库：std::chrono1234567#include &lt;chrono&gt;&#x2F;&#x2F;duration_cast 在不同的duration&lt;T, R&gt;类型之间转换, T,R 表示数字类型和时间单位类型auto t0 &#x3D; std::chrono::steady_clock::now();auto t1 &#x3D; std::chrono::steady_cl">
 <meta property="og:type" content="article">
-<meta property="og:title" content="cpp11_multi_threads">
+<meta property="og:title" content="cpp11_多线程">
 <meta property="og:url" content="http://example.com/2024/03/29/cpp11-multi-threads/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="1. C++ 11 引入的时间标准库：std::chrono1234567#include &lt;chrono&gt;&#x2F;&#x2F;duration_cast 在不同的duration&lt;T, R&gt;类型之间转换, T,R 表示数字类型和时间单位类型auto t0 &#x3D; std::chrono::steady_clock::now();auto t1 &#x3D; std::chrono::steady_cl">
@@ -30,7 +30,7 @@
 <meta property="og:image" content="http://example.com/2024/03/29/cpp11-multi-threads/image-20240329232411186.png">
 <meta property="og:image" content="http://example.com/2024/03/29/cpp11-multi-threads/image-20240329232936476.png">
 <meta property="article:published_time" content="2024-03-29T12:12:08.000Z">
-<meta property="article:modified_time" content="2024-03-30T07:13:20.772Z">
+<meta property="article:modified_time" content="2024-03-30T07:38:02.307Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="多线程">
 <meta name="twitter:card" content="summary">
@@ -46,7 +46,7 @@
     
     <title>
         
-            cpp11_multi_threads -
+            cpp11_多线程 -
         
         CS Notes
     </title>
@@ -358,7 +358,7 @@
 
         <div class="statistics flex justify-around my-2.5">
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/tags">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">4</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">5</div>
         <div class="label text-third-text-color text-sm">Tags</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/categories">
@@ -366,7 +366,7 @@
         <div class="label text-third-text-color text-sm">Categories</div>
     </a>
     <a class="item tag-count-item flex flex-col justify-center items-center w-20" href="/archives">
-        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">6</div>
+        <div class="number text-2xl sm:text-xl text-second-text-color font-semibold">7</div>
         <div class="label text-third-text-color text-sm">Posts</div>
     </a>
 </div>
@@ -392,7 +392,7 @@
         <div class="article-title relative w-full">
             
                 <div class="w-full flex items-center pt-6 justify-start">
-                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">cpp11_multi_threads</h1>
+                    <h1 class="article-title-regular text-second-text-color text-4xl md:text-6xl font-bold px-2 sm:px-6 md:px-8 py-3">cpp11_多线程</h1>
                 </div>
             
             </div>
@@ -420,8 +420,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2024-03-30 15:13:20</span>
-            <span class="mobile">2024-03-30 15:13:20</span>
+            <span class="desktop">2024-03-30 15:38:02</span>
+            <span class="mobile">2024-03-30 15:38:02</span>
             <span class="hover-info">Updated</span>
         </span>
     
@@ -578,7 +578,7 @@
 
 <p>根据C++ concept 的设计，unique_lock 可以调用lock()和自动调用unlock()</p>
 <p>shared_lock就是读写锁的RAII思想的设计，可以调用lock_shared() 和 unlock_shared()</p>
-<h3 id="4-条件变量"><a href="#4-条件变量" class="headerlink" title="4. 条件变量"></a>4. 条件变量</h3> <div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mutex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;condition_variable&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::condition_variable cv;</span><br><span class="line">    std::mutex mtx;</span><br><span class="line"></span><br><span class="line">    <span class="function">std::thread <span class="title">t1</span><span class="params">([&amp;] &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">        std::unique_lock lck(mtx);</span></span></span><br><span class="line"><span class="params"><span class="function">        cv.wait(lck);</span></span></span><br><span class="line"><span class="params"><span class="function">        std::cout &lt;&lt; <span class="string">&quot;t1 is awake&quot;</span> &lt;&lt; std::endl;</span></span></span><br><span class="line"><span class="params"><span class="function">    &#125;)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">std::thread <span class="title">t2</span><span class="params">([&amp;] &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">        std::unique_lock lck(mtx);</span></span></span><br><span class="line"><span class="params"><span class="function">        cv.wait(lck);</span></span></span><br><span class="line"><span class="params"><span class="function">        std::cout &lt;&lt; <span class="string">&quot;t2 is awake&quot;</span> &lt;&lt; std::endl;</span></span></span><br><span class="line"><span class="params"><span class="function">    &#125;)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">std::thread <span class="title">t3</span><span class="params">([&amp;] &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">        std::unique_lock lck(mtx);</span></span></span><br><span class="line"><span class="params"><span class="function">        cv.wait(lck);</span></span></span><br><span class="line"><span class="params"><span class="function">        std::cout &lt;&lt; <span class="string">&quot;t3 is awake&quot;</span> &lt;&lt; std::endl;</span></span></span><br><span class="line"><span class="params"><span class="function">    &#125;)</span></span>;</span><br><span class="line"></span><br><span class="line">    std::this_thread::<span class="built_in">sleep_for</span>(std::chrono::<span class="built_in">milliseconds</span>(<span class="number">400</span>));</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;notifying one&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    cv.<span class="built_in">notify_one</span>();  <span class="comment">// awakening t1 only</span></span><br><span class="line"></span><br><span class="line">    std::this_thread::<span class="built_in">sleep_for</span>(std::chrono::<span class="built_in">milliseconds</span>(<span class="number">400</span>));</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;notifying all&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    cv.<span class="built_in">notify_all</span>();  <span class="comment">// awakening t1 and t2</span></span><br><span class="line"></span><br><span class="line">    t1.<span class="built_in">join</span>();</span><br><span class="line">    t2.<span class="built_in">join</span>();</span><br><span class="line">    t3.<span class="built_in">join</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 条件变量std::condition_variable需要和unique_lock 配合使用，因为有多个线程等待时保证只能唤醒一个</span></span><br></pre></td></tr></table></figure></div>
+<h3 id="6-条件变量"><a href="#6-条件变量" class="headerlink" title="6. 条件变量"></a>6. 条件变量</h3> <div class="highlight-container" data-rel="C++"><figure class="iseeu highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;thread&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mutex&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;condition_variable&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    std::condition_variable cv;</span><br><span class="line">    std::mutex mtx;</span><br><span class="line"></span><br><span class="line">    <span class="function">std::thread <span class="title">t1</span><span class="params">([&amp;] &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">        std::unique_lock lck(mtx);</span></span></span><br><span class="line"><span class="params"><span class="function">        cv.wait(lck);</span></span></span><br><span class="line"><span class="params"><span class="function">        std::cout &lt;&lt; <span class="string">&quot;t1 is awake&quot;</span> &lt;&lt; std::endl;</span></span></span><br><span class="line"><span class="params"><span class="function">    &#125;)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">std::thread <span class="title">t2</span><span class="params">([&amp;] &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">        std::unique_lock lck(mtx);</span></span></span><br><span class="line"><span class="params"><span class="function">        cv.wait(lck);</span></span></span><br><span class="line"><span class="params"><span class="function">        std::cout &lt;&lt; <span class="string">&quot;t2 is awake&quot;</span> &lt;&lt; std::endl;</span></span></span><br><span class="line"><span class="params"><span class="function">    &#125;)</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="function">std::thread <span class="title">t3</span><span class="params">([&amp;] &#123;</span></span></span><br><span class="line"><span class="params"><span class="function">        std::unique_lock lck(mtx);</span></span></span><br><span class="line"><span class="params"><span class="function">        cv.wait(lck);</span></span></span><br><span class="line"><span class="params"><span class="function">        std::cout &lt;&lt; <span class="string">&quot;t3 is awake&quot;</span> &lt;&lt; std::endl;</span></span></span><br><span class="line"><span class="params"><span class="function">    &#125;)</span></span>;</span><br><span class="line"></span><br><span class="line">    std::this_thread::<span class="built_in">sleep_for</span>(std::chrono::<span class="built_in">milliseconds</span>(<span class="number">400</span>));</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;notifying one&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    cv.<span class="built_in">notify_one</span>();  <span class="comment">// awakening t1 only</span></span><br><span class="line"></span><br><span class="line">    std::this_thread::<span class="built_in">sleep_for</span>(std::chrono::<span class="built_in">milliseconds</span>(<span class="number">400</span>));</span><br><span class="line"></span><br><span class="line">    std::cout &lt;&lt; <span class="string">&quot;notifying all&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">    cv.<span class="built_in">notify_all</span>();  <span class="comment">// awakening t1 and t2</span></span><br><span class="line"></span><br><span class="line">    t1.<span class="built_in">join</span>();</span><br><span class="line">    t2.<span class="built_in">join</span>();</span><br><span class="line">    t3.<span class="built_in">join</span>();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 条件变量std::condition_variable需要和unique_lock 配合使用，因为有多个线程等待时保证只能唤醒一个</span></span><br></pre></td></tr></table></figure></div>
 
 <p>经典面试题：写一个生产者消费者模式</p>
 
@@ -588,14 +588,14 @@
             <div class="post-copyright-info w-full my-8 px-2 sm:px-6 md:px-8">
                 <div class="article-copyright-info-container">
     <ul>
-        <li><strong>Title:</strong> cpp11_multi_threads</li>
+        <li><strong>Title:</strong> cpp11_多线程</li>
         <li><strong>Author:</strong> Crayon</li>
         <li><strong>Created at
                 :</strong> 2024-03-29 20:12:08</li>
         
             <li>
                 <strong>Updated at
-                    :</strong> 2024-03-30 15:13:20
+                    :</strong> 2024-03-30 15:38:02
             </li>
         
         <li>
@@ -641,7 +641,7 @@
                                 <i class="fa-solid fa-chevron-left"></i>
                             </span>
                             <span class="title flex justify-center items-center">
-                                <span class="post-nav-title-item">RAII_and_SmartPointer</span>
+                                <span class="post-nav-title-item">RAII和智能指针</span>
                                 <span class="post-nav-item">Prev posts</span>
                             </span>
                         </a>
@@ -717,8 +717,8 @@
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">On this page</div>
-        <div class="page-title">cpp11_multi_threads</div>
-        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-C-11-%E5%BC%95%E5%85%A5%E7%9A%84%E6%97%B6%E9%97%B4%E6%A0%87%E5%87%86%E5%BA%93%EF%BC%9Astd-chrono"><span class="nav-text">1. C++ 11 引入的时间标准库：std::chrono</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BA%BF%E7%A8%8B"><span class="nav-text">2. 线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%BC%82%E6%AD%A5%EF%BC%9Astd-async"><span class="nav-text">3. 异步：std::async()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%BA%92%E6%96%A5%E9%87%8F"><span class="nav-text">3. 互斥量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%AD%BB%E9%94%81"><span class="nav-text">4. 死锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-text">5. 数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F"><span class="nav-text">4. 条件变量</span></a></li></ol>
+        <div class="page-title">cpp11_多线程</div>
+        <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-C-11-%E5%BC%95%E5%85%A5%E7%9A%84%E6%97%B6%E9%97%B4%E6%A0%87%E5%87%86%E5%BA%93%EF%BC%9Astd-chrono"><span class="nav-text">1. C++ 11 引入的时间标准库：std::chrono</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%BA%BF%E7%A8%8B"><span class="nav-text">2. 线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%BC%82%E6%AD%A5%EF%BC%9Astd-async"><span class="nav-text">3. 异步：std::async()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%BA%92%E6%96%A5%E9%87%8F"><span class="nav-text">3. 互斥量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E6%AD%BB%E9%94%81"><span class="nav-text">4. 死锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-text">5. 数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E6%9D%A1%E4%BB%B6%E5%8F%98%E9%87%8F"><span class="nav-text">6. 条件变量</span></a></li></ol>
 
     </div>
 </div>
@@ -751,7 +751,7 @@
                 
                 <p class="post-count space-x-0.5">
                     <span>
-                        6 posts in total
+                        7 posts in total
                     </span>
                     
                 </p>
